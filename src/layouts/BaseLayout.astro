@@ -23,9 +23,7 @@ const siteDomain = 'https://spellingbeesolver.dev';
     <meta name="author" content="SpellingBee Solver" />
     <link rel="canonical" href={`${siteDomain}${currentPath}`} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <!-- Fonts loaded from system / browser cache — no external API request -->
     <title>{title} | {siteName}</title>
     <!-- Open Graph -->
     <meta property="og:site_name" content={siteName} />
@@ -42,59 +40,62 @@ const siteDomain = 'https://spellingbeesolver.dev';
   </head>
   <body class="min-h-screen flex flex-col">
     <!-- Header -->
-    <header class="bg-white/80 backdrop-blur-lg border-b border-gray-100 sticky top-0 z-50">
-      <div class="max-w-6xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
-        <a href="/" class="flex items-center gap-2.5 group" aria-label="SpellingBee Solver Home">
-          <svg width="36" height="40" viewBox="0 0 100 110" class="group-hover:scale-105 transition-transform" aria-hidden="true">
-            <polygon points="50,3 95,27.5 95,72.5 50,97 5,72.5 5,27.5" fill="#F7C948" stroke="#E8A317" stroke-width="3"/>
-            <text x="50" y="62" font-family="system-ui,sans-serif" font-size="38" font-weight="900" fill="white" text-anchor="middle">B</text>
-          </svg>
+    <header class="sticky top-0 z-50" style="background:rgba(15,23,42,0.97);backdrop-filter:blur(16px);border-bottom:1px solid rgba(247,201,72,0.12);">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
+        <!-- Logo -->
+        <a href="/" class="flex items-center gap-3 group flex-shrink-0" aria-label="SpellingBee Solver Home">
+          <div class="relative">
+            <svg width="34" height="38" viewBox="0 0 100 110" class="group-hover:scale-110 transition-transform duration-200" aria-hidden="true">
+              <polygon points="50,3 95,27.5 95,72.5 50,97 5,72.5 5,27.5" fill="#F7C948" stroke="#E8A317" stroke-width="3"/>
+              <text x="50" y="62" font-family="system-ui,sans-serif" font-size="38" font-weight="900" fill="white" text-anchor="middle">B</text>
+            </svg>
+            <span class="absolute -top-1 -right-1 w-2.5 h-2.5 bg-amber-400 rounded-full border-2 border-[#0F172A] animate-pulse" aria-hidden="true"></span>
+          </div>
           <div>
-            <span class="font-black text-lg text-gray-900 tracking-tight">SpellingBee Solver</span>
-            <span class="hidden sm:block text-[10px] text-gray-400 font-medium -mt-0.5 tracking-wide">DAILY SPELLING BEE ANSWERS</span>
+            <span class="font-black text-white text-base tracking-tight leading-none block">SpellingBee<span class="text-amber-400">Solver</span></span>
+            <span class="hidden sm:block text-[9px] font-bold text-slate-500 uppercase tracking-[0.15em] mt-0.5">Daily NYT Answers</span>
           </div>
         </a>
-        <!-- Mobile menu button (hidden on sm+) -->
-        <button id="mobile-menu-btn" class="sm:hidden flex items-center justify-center w-10 h-10 rounded-lg text-gray-600 hover:bg-amber-50 hover:text-amber-700 transition-colors" aria-label="Open menu" aria-expanded="false">
-          <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/></svg>
+
+        <!-- Mobile menu button -->
+        <button id="mobile-menu-btn" class="sm:hidden flex items-center justify-center w-9 h-9 rounded-lg text-slate-400 hover:text-amber-400 hover:bg-white/5 transition-colors" aria-label="Open menu" aria-expanded="false">
+          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/></svg>
         </button>
 
-        <!-- Desktop nav (hidden on mobile) -->
-        <nav class="hidden sm:flex items-center gap-0.5 sm:gap-1" aria-label="Main navigation">
-          <a href="/today" class:list={["nav-link", currentPath === '/today' && '!bg-amber-50 !text-amber-700']}>Today</a>
-          <a href="/solver" class:list={["nav-link", currentPath === '/solver' && '!bg-amber-50 !text-amber-700']}>Solver</a>
-          <a href="/archive" class:list={["nav-link", currentPath.startsWith('/archive') && '!bg-amber-50 !text-amber-700']}>Archive</a>
-          <a href="/stats" class:list={["nav-link", currentPath === '/stats' && '!bg-amber-50 !text-amber-700']}>Stats</a>
-          <a href="/blog" class:list={["nav-link", currentPath.startsWith('/blog') && '!bg-amber-50 !text-amber-700']}>Blog</a>
-          <a href="/blog/spelling-bee-rules" class:list={["nav-link", currentPath === '/blog/spelling-bee-rules' && '!bg-amber-50 !text-amber-700']}>Rules</a>
+        <!-- Desktop nav -->
+        <nav class="hidden sm:flex items-center gap-1" aria-label="Main navigation">
+          <a href="/today" class:list={["nav-link", currentPath === '/today' && 'nav-link-active']}>Today</a>
+          <a href="/solver" class:list={["nav-link", currentPath === '/solver' && 'nav-link-active']}>Solver</a>
+          <a href="/archive" class:list={["nav-link", currentPath.startsWith('/archive') && 'nav-link-active']}>Archive</a>
+          <a href="/stats" class:list={["nav-link", currentPath === '/stats' && 'nav-link-active']}>Stats</a>
+          <a href="/blog" class:list={["nav-link", currentPath.startsWith('/blog') && 'nav-link-active']}>Blog</a>
+          <a href="/today"
+             class="ml-3 px-4 py-2 rounded-xl font-bold text-sm text-white transition-all hover:-translate-y-0.5 hover:shadow-lg flex-shrink-0"
+             style="background:linear-gradient(135deg,#F7C948 0%,#D97706 100%);box-shadow:0 3px 10px rgba(247,201,72,.25);">Today's Answers</a>
         </nav>
 
         <!-- Mobile dropdown menu -->
-        <div id="mobile-menu" class="hidden sm:hidden absolute top-full left-0 right-0 bg-white border-b border-gray-100 shadow-lg z-50">
-          <nav class="max-w-6xl mx-auto px-4 py-3 space-y-1" aria-label="Mobile navigation">
-            <a href="/today" class:list={["mobile-nav-link", currentPath === '/today' && '!text-amber-700 !bg-amber-50']}>
+        <div id="mobile-menu" class="hidden sm:hidden absolute top-16 left-0 right-0 z-50" style="background:rgba(15,23,42,0.98);backdrop-filter:blur(16px);border-bottom:1px solid rgba(247,201,72,0.15);">
+          <nav class="max-w-6xl mx-auto px-4 py-4 space-y-1" aria-label="Mobile navigation">
+            <a href="/today" class:list={["mobile-nav-link", currentPath === '/today' && '!text-amber-400 !bg-amber-500/10']}>
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-              Today
+              Today's Answers
             </a>
-            <a href="/solver" class:list={["mobile-nav-link", currentPath === '/solver' && '!text-amber-700 !bg-amber-50']}>
+            <a href="/solver" class:list={["mobile-nav-link", currentPath === '/solver' && '!text-amber-400 !bg-amber-500/10']}>
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-              Solver
+              Solver Tool
             </a>
-            <a href="/archive" class:list={["mobile-nav-link", currentPath.startsWith('/archive') && '!text-amber-700 !bg-amber-50']}>
+            <a href="/archive" class:list={["mobile-nav-link", currentPath.startsWith('/archive') && '!text-amber-400 !bg-amber-500/10']}>
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
               Archive
             </a>
-            <a href="/stats" class:list={["mobile-nav-link", currentPath === '/stats' && '!text-amber-700 !bg-amber-50']}>
+            <a href="/stats" class:list={["mobile-nav-link", currentPath === '/stats' && '!text-amber-400 !bg-amber-500/10']}>
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 20V10"/><path d="M12 20V4"/><path d="M6 20v-6"/></svg>
-              Stats
+              Statistics
             </a>
-            <a href="/blog" class:list={["mobile-nav-link", currentPath.startsWith('/blog') && '!text-amber-700 !bg-amber-50']}>
+            <a href="/blog" class:list={["mobile-nav-link", currentPath.startsWith('/blog') && '!text-amber-400 !bg-amber-500/10']}>
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
               Blog
-            </a>
-            <a href="/blog/spelling-bee-rules" class:list={["mobile-nav-link", currentPath === '/blog/spelling-bee-rules' && '!text-amber-700 !bg-amber-50']}>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-              Rules
             </a>
           </nav>
         </div>
@@ -106,41 +107,78 @@ const siteDomain = 'https://spellingbeesolver.dev';
     </main>
 
     <!-- Footer -->
-    <footer class="bg-gray-900 text-gray-400 mt-auto">
-      <div class="max-w-6xl mx-auto px-4 sm:px-6 py-12">
-        <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
-          <div>
-            <h4 class="font-bold text-white text-sm mb-3">ANSWERS</h4>
-            <div class="space-y-2 text-sm">
-              <a href="/today" class="block hover:text-amber-400 transition-colors">Today's Answers</a>
-              <a href="/archive" class="block hover:text-amber-400 transition-colors">Puzzle Archive</a>
-              <a href="/stats" class="block hover:text-amber-400 transition-colors">Statistics</a>
-            </div>
-          </div>
-          <div>
-            <h4 class="font-bold text-white text-sm mb-3">TOOLS</h4>
-            <div class="space-y-2 text-sm">
-              <a href="/solver" class="block hover:text-amber-400 transition-colors">Word Solver</a>
-              <a href="/blog/spelling-bee-rules" class="block hover:text-amber-400 transition-colors">Spelling Bee Rules</a>
-            </div>
-          </div>
-          <div>
-            <h4 class="font-bold text-white text-sm mb-3">BLOG</h4>
-            <div class="space-y-2 text-sm">
-              <a href="/blog" class="block hover:text-amber-400 transition-colors">All Articles</a>
-              <a href="/blog/spelling-bee-rules" class="block hover:text-amber-400 transition-colors">Rules Guide</a>
-            </div>
-          </div>
-          <div>
-            <div class="flex items-center gap-2 mb-3">
-              <svg width="24" height="27" viewBox="0 0 100 110" aria-hidden="true">
+    <footer class="mt-auto" style="background:linear-gradient(180deg,#0A0F1E 0%,#060B14 100%);">
+      <!-- Top accent line -->
+      <div style="height:2px;background:linear-gradient(90deg,transparent 0%,#F7C948 30%,#F59E0B 70%,transparent 100%);"></div>
+
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 pt-14 pb-8">
+        <!-- Main footer grid -->
+        <div class="grid sm:grid-cols-2 lg:grid-cols-12 gap-10 mb-12">
+          <!-- Brand column -->
+          <div class="lg:col-span-4">
+            <a href="/" class="inline-flex items-center gap-3 mb-5">
+              <svg width="36" height="40" viewBox="0 0 100 110" aria-hidden="true">
                 <polygon points="50,3 95,27.5 95,72.5 50,97 5,72.5 5,27.5" fill="#F7C948" stroke="#E8A317" stroke-width="3"/>
                 <text x="50" y="62" font-family="system-ui,sans-serif" font-size="38" font-weight="900" fill="white" text-anchor="middle">B</text>
               </svg>
-              <span class="font-black text-white text-sm tracking-tight">SpellingBee Solver</span>
+              <span class="font-black text-white text-lg tracking-tight">SpellingBee<span class="text-amber-400">Solver</span></span>
+            </a>
+            <p class="text-slate-400 text-sm leading-relaxed max-w-xs mb-5">The fastest way to solve the NYT Spelling Bee. Every word, every pangram, every day — completely free.</p>
+            <div class="flex items-center gap-2 p-3 rounded-xl" style="background:rgba(247,201,72,0.07);border:1px solid rgba(247,201,72,0.15);">
+              <span class="w-2 h-2 bg-amber-400 rounded-full animate-pulse flex-shrink-0" aria-hidden="true"></span>
+              <span class="text-amber-400 text-xs font-bold">Updated daily · Always free · No sign-up</span>
             </div>
-            <p class="text-sm leading-relaxed">Free NYT Spelling Bee solver and answer tool. Updated daily with the latest puzzle solutions, hints, and statistics. Not affiliated with The New York Times.</p>
-            <p class="text-xs text-gray-500 mt-4">&copy; {new Date().getFullYear()} SpellingBee Solver. All rights reserved.</p>
+          </div>
+
+          <!-- Quick Links -->
+          <div class="lg:col-span-2">
+            <h4 class="font-bold text-white text-xs uppercase tracking-widest mb-5">Answers</h4>
+            <div class="space-y-3">
+              <a href="/today" class="footer-link flex items-center gap-2">
+                <span class="w-1 h-1 bg-amber-500 rounded-full"></span>Today's Answers
+              </a>
+              <a href="/archive" class="footer-link flex items-center gap-2">
+                <span class="w-1 h-1 bg-amber-500 rounded-full"></span>Puzzle Archive
+              </a>
+              <a href="/stats" class="footer-link flex items-center gap-2">
+                <span class="w-1 h-1 bg-amber-500 rounded-full"></span>Statistics
+              </a>
+            </div>
+          </div>
+
+          <div class="lg:col-span-2">
+            <h4 class="font-bold text-white text-xs uppercase tracking-widest mb-5">Tools</h4>
+            <div class="space-y-3">
+              <a href="/solver" class="footer-link flex items-center gap-2">
+                <span class="w-1 h-1 bg-amber-500 rounded-full"></span>Word Solver
+              </a>
+              <a href="/blog/spelling-bee-rules" class="footer-link flex items-center gap-2">
+                <span class="w-1 h-1 bg-amber-500 rounded-full"></span>Bee Rules
+              </a>
+              <a href="/blog" class="footer-link flex items-center gap-2">
+                <span class="w-1 h-1 bg-amber-500 rounded-full"></span>Blog
+              </a>
+            </div>
+          </div>
+
+          <!-- CTA column -->
+          <div class="lg:col-span-4">
+            <h4 class="font-bold text-white text-xs uppercase tracking-widest mb-5">Today's Puzzle</h4>
+            <p class="text-slate-400 text-sm mb-4 leading-relaxed">Get every word for today's NYT Spelling Bee puzzle, including all pangrams and scoring data.</p>
+            <a href="/today"
+               class="inline-flex items-center gap-2.5 px-5 py-3 rounded-xl font-bold text-sm text-white transition-all hover:-translate-y-0.5"
+               style="background:linear-gradient(135deg,#F7C948 0%,#D97706 100%);box-shadow:0 4px 16px rgba(247,201,72,.2);">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+              View Today's Answers
+            </a>
+          </div>
+        </div>
+
+        <!-- Bottom bar -->
+        <div class="pt-6" style="border-top:1px solid rgba(255,255,255,0.06);">
+          <div class="flex flex-col sm:flex-row items-center justify-between gap-3">
+            <p class="text-xs text-slate-600">&copy; {new Date().getFullYear()} SpellingBee Solver. All rights reserved.</p>
+            <p class="text-xs text-slate-600 text-center">Not affiliated with, endorsed by, or connected to The New York Times Company.</p>
           </div>
         </div>
       </div>

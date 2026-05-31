@@ -121,23 +121,62 @@ const combinedSchema = JSON.stringify([JSON.parse(howToSchema), JSON.parse(faqSc
 
     <div class="flex flex-col lg:flex-row gap-8 items-start">
       <!-- Left: Input & Honeycomb -->
-      <div class="w-full lg:w-auto flex-shrink-0">
-        <!-- Quick type input -->
-        <div class="mb-5 card-elevated p-5">
-          <label class="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-2.5">Quick Enter — Type all 7 letters (center first)</label>
-          <input
-            type="text"
-            id="quick-input"
-            class="solver-quick-input"
-            maxlength="7"
-            placeholder="e.g. ABCDEFG — center letter first"
-            autocomplete="off"
-            spellcheck="false"
-          />
-          <p class="text-[11px] text-gray-400 mt-2 text-center">First letter = center · Or use the hex grid below</p>
+      <div class="w-full lg:w-auto flex-shrink-0 lg:w-[340px]">
+
+        <!-- ── FAST TEXT ENTRY ── -->
+        <div class="card-elevated p-5 mb-4">
+          <p class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-1 text-center">Fast Entry</p>
+          <p class="text-[11px] text-gray-400 text-center mb-4">Type letters directly — center + outer sync automatically</p>
+          <div class="flex items-center gap-3">
+            <!-- Center letter box -->
+            <div class="flex flex-col items-center gap-1.5">
+              <label for="text-center" class="text-[10px] font-bold text-amber-600 uppercase tracking-widest">Center</label>
+              <input
+                type="text"
+                id="text-center"
+                class="solver-box-center"
+                maxlength="1"
+                placeholder="A"
+                autocomplete="off"
+                spellcheck="false"
+                aria-label="Center letter"
+              />
+            </div>
+            <!-- Outer letters box -->
+            <div class="flex flex-col items-center gap-1.5 flex-1">
+              <label for="text-outer" class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Outer Letters (6)</label>
+              <input
+                type="text"
+                id="text-outer"
+                class="solver-box-outer"
+                maxlength="6"
+                placeholder="BCDEFG"
+                autocomplete="off"
+                spellcheck="false"
+                aria-label="Outer letters"
+              />
+            </div>
+          </div>
+          <button id="text-solve-btn"
+            class="w-full mt-4 py-3 rounded-xl font-bold text-sm text-white transition-all hover:-translate-y-0.5"
+            style="background:linear-gradient(135deg,#F7C948 0%,#D97706 100%);box-shadow:0 4px 12px rgba(247,201,72,.3);"
+            type="button">
+            <svg class="inline mr-1.5" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+            Solve
+          </button>
         </div>
 
-        <div class="card-elevated p-6 sm:p-8">
+        <!-- ── OR divider ── -->
+        <div class="flex items-center gap-3 my-4">
+          <div class="flex-1 h-px" style="background:linear-gradient(90deg,transparent,#E2E8F0);"></div>
+          <span class="text-xs font-black text-gray-400 uppercase tracking-widest px-2">or</span>
+          <div class="flex-1 h-px" style="background:linear-gradient(90deg,#E2E8F0,transparent);"></div>
+        </div>
+
+        <!-- ── VISUAL HEX INPUT ── -->
+        <div class="card-elevated p-5 sm:p-6">
+          <p class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-1 text-center">Hex Diagram</p>
+          <p class="text-[11px] text-gray-400 text-center mb-4">Click each hexagon and type one letter</p>
           <!-- Interactive Honeycomb Input -->
           <div id="solver-hex-container" class="honeycomb-solver mx-auto">
             <!-- Center hex -->
@@ -258,7 +297,7 @@ const combinedSchema = JSON.stringify([JSON.parse(howToSchema), JSON.parse(faqSc
           </div>
 
           <!-- Words by length -->
-          <div id="solver-words" class="card-elevated max-h-[500px] overflow-y-auto custom-scroll divide-y divide-gray-50"></div>
+          <div id="solver-words" class="card-elevated divide-y divide-gray-50"></div>
         </div>
 
         <!-- Empty State -->
@@ -276,51 +315,47 @@ const combinedSchema = JSON.stringify([JSON.parse(howToSchema), JSON.parse(faqSc
 
     <!-- How To Section -->
     <section class="mt-12">
-      <h2 class="text-2xl font-bold text-gray-900 mb-6">How to Use the Spelling Bee Solver</h2>
+      <h2 class="font-black text-gray-900 mb-6" style="font-size:1.4rem;">How to Use the Spelling Bee Solver</h2>
       <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
         <div class="card feature-card p-6">
           <div class="step-number mb-4">1</div>
-          <h3 class="font-bold text-gray-800 mb-2">Find the center letter</h3>
-          <p class="text-sm text-gray-500 leading-relaxed">Open the NYT Spelling Bee and identify the letter in the center hexagon. Every valid word must include this letter — it's the one constraint that shapes the entire puzzle.</p>
+          <h3 class="font-bold text-gray-800 mb-3" style="font-size:1.125rem;">Find the center letter</h3>
+          <p class="text-gray-500 leading-relaxed" style="font-size:1.125rem;">Open the NYT Spelling Bee and identify the letter in the center hexagon. Every valid word must include this letter.</p>
         </div>
         <div class="card feature-card p-6">
           <div class="step-number mb-4">2</div>
-          <h3 class="font-bold text-gray-800 mb-2">Enter your letters</h3>
-          <p class="text-sm text-gray-500 leading-relaxed">Click the center hex above and type the center letter. Then fill in the six surrounding hexagons with the outer letters. Letters auto-capitalize and auto-advance to the next hex.</p>
+          <h3 class="font-bold text-gray-800 mb-3" style="font-size:1.125rem;">Enter your letters</h3>
+          <p class="text-gray-500 leading-relaxed" style="font-size:1.125rem;">Type the center letter in the Center box, and the 6 outer letters in the Outer box. Or click each hex and type directly in the honeycomb diagram.</p>
         </div>
         <div class="card feature-card p-6">
           <div class="step-number mb-4">3</div>
-          <h3 class="font-bold text-gray-800 mb-2">Get your results</h3>
-          <p class="text-sm text-gray-500 leading-relaxed">Click Solve or press Enter. The solver returns every dictionary-valid word sorted by length, with pangrams highlighted and total points calculated using official NYT scoring rules.</p>
+          <h3 class="font-bold text-gray-800 mb-3" style="font-size:1.125rem;">Get your results</h3>
+          <p class="text-gray-500 leading-relaxed" style="font-size:1.125rem;">Click Solve. The solver returns every valid word sorted by length, with pangrams highlighted and total points calculated.</p>
         </div>
       </div>
     </section>
 
-    <!-- Comprehensive SEO Content (1500 words target) -->
-    <section class="mt-10 p-6 bg-gray-50 rounded-2xl">
-      <h2 class="text-xl font-bold text-gray-800 mb-4">The Complete Guide to Solving the NYT Spelling Bee</h2>
+    <!-- Comprehensive SEO Content -->
+    <section class="mt-10 p-7 rounded-2xl" style="background:linear-gradient(180deg,#F8FAFC 0%,#F1F5F9 100%);border:1px solid #E2E8F0;">
+      <h2 class="font-black text-gray-900 mb-6" style="font-size:1.4rem;">The Complete Guide to Solving the NYT Spelling Bee</h2>
 
-      <h3 class="text-lg font-bold text-gray-800 mb-2 mt-4">What Is the NYT Spelling Bee?</h3>
-      <p class="text-gray-600 leading-relaxed text-sm mb-3">The New York Times Spelling Bee is a daily word puzzle that challenges players to find as many words as possible from a set of seven letters arranged in a honeycomb pattern. One letter sits at the center — every word you form must include it. Words need to be at least four letters long, and you can reuse letters as many times as you want. The puzzle resets every day at midnight Eastern time, and thousands of players compete to reach the top rank of Queen Bee by finding all the words.</p>
-      <p class="text-gray-600 leading-relaxed text-sm mb-3">The game debuted in the NYT Magazine in 2018 and moved to the NYT Games app shortly after. Unlike Wordle, which gives you a single puzzle per day with no hints, the Spelling Bee rewards persistence — you can keep guessing words until you find them all. The challenge isn't just vocabulary; it's pattern recognition, letter combination awareness, and knowing which prefixes and suffixes combine with the available letters.</p>
+      <h3 class="font-bold text-gray-800 mb-3" style="font-size:1.4rem;">What Is the NYT Spelling Bee?</h3>
+      <p class="text-gray-600 leading-relaxed mb-4" style="font-size:1.125rem;">The New York Times Spelling Bee is a daily word puzzle that challenges players to find as many words as possible from a set of seven letters arranged in a honeycomb pattern. One letter sits at the center and every word you form must include it. Words need to be at least four letters long, and you can reuse letters as many times as you want. The puzzle resets every day at midnight Eastern time.</p>
+      <p class="text-gray-600 leading-relaxed mb-4" style="font-size:1.125rem;">The game debuted in the NYT Magazine in 2018 and moved to the NYT Games app shortly after. Unlike Wordle, which gives you a single puzzle per day, the Spelling Bee rewards persistence — you can keep guessing until you find them all.</p>
 
-      <h3 class="text-lg font-bold text-gray-800 mb-2 mt-4">How Scoring Works</h3>
-      <p class="text-gray-600 leading-relaxed text-sm mb-3">The Spelling Bee uses a straightforward scoring system. Four-letter words are worth 1 point each, regardless of the word. Five-letter and longer words earn points equal to their letter count — a 6-letter word gets 6 points, a 9-letter word gets 9 points. Pangrams, which use all seven available letters at least once, earn a 7-point bonus on top of their base score. This means a 7-letter pangram is worth 14 points (7 base + 7 bonus), while a 10-letter pangram earns 17 points.</p>
-      <p class="text-gray-600 leading-relaxed text-sm mb-3">Progress tiers are based on percentages of the maximum possible score: Beginner (0%), Starting (2%), Solid (5%), Nice (8%), Good (15%), Great (25%), Amazing (40%), Genius (70%), and Queen Bee (100%). Most regular players aim for Genius, which requires finding roughly 70% of all available points. Reaching Queen Bee means finding every single word — a feat that's genuinely difficult on puzzles with 50+ answers.</p>
+      <h3 class="font-bold text-gray-800 mb-3 mt-7" style="font-size:1.4rem;">How Scoring Works</h3>
+      <p class="text-gray-600 leading-relaxed mb-4" style="font-size:1.125rem;">Four-letter words are worth 1 point each. Five-letter and longer words earn points equal to their letter count. Pangrams earn a 7-point bonus on top. Progress tiers run from Beginner to Queen Bee (100%), with Genius at 70% being the most common goal.</p>
 
-      <h3 class="text-lg font-bold text-gray-800 mb-2 mt-4">Why Use a Solver?</h3>
-      <p class="text-gray-600 leading-relaxed text-sm mb-3">A solver tool isn't about cheating — it's about learning. Many players use solvers after they've finished their own attempt to see which words they missed. The most commonly overlooked words tend to be longer entries, words with repeated letters, and words that start with less common letter combinations. Running your letter set through a solver shows you the full landscape of possible words, including ones you might never have considered.</p>
-      <p class="text-gray-600 leading-relaxed text-sm mb-3">Some players use the solver as a hint system, checking pangram counts or total word counts without revealing the actual words. This gives you a sense of how much you've found versus how much is out there, which helps you decide whether to keep searching or call it a day. Our Autofill feature makes this especially easy — one click loads today's letters, and you can see the total word and pangram counts immediately.</p>
+      <h3 class="font-bold text-gray-800 mb-3 mt-7" style="font-size:1.4rem;">Why Use a Solver?</h3>
+      <p class="text-gray-600 leading-relaxed mb-4" style="font-size:1.125rem;">Many players use solvers after finishing their own attempt to see which words they missed. The most commonly overlooked words tend to be longer entries, words with repeated letters, and words that start with uncommon letter combinations. Running your letters through a solver shows the full landscape of possible words.</p>
+      <p class="text-gray-600 leading-relaxed mb-4" style="font-size:1.125rem;">Some players use the solver as a hint system, checking pangram counts without revealing the actual words. Our Autofill feature makes this especially easy — one click loads today's letters, and you can see the total word and pangram counts immediately.</p>
 
-      <h3 class="text-lg font-bold text-gray-800 mb-2 mt-4">Strategies for Finding More Words</h3>
-      <p class="text-gray-600 leading-relaxed text-sm mb-3">Start with the pangrams. There's usually at least one per puzzle, and finding it early gives you a significant point boost. Try combining all seven letters in different orders — the pangram often uses a common prefix or suffix attached to a shorter root word. If the outer letters include common endings like -ING, -TION, -NESS, or -MENT, try attaching them to shorter words you've already found.</p>
-      <p class="text-gray-600 leading-relaxed text-sm mb-3">Work systematically through prefixes and suffixes. If your letters allow it, try every combination of the center letter with each outer letter as a starting letter. Then test common word beginnings: RE-, UN-, IN-, OUT-, OVER-. Do the same with endings: -ED, -ER, -EST, -ING, -LY, -TION. This methodical approach catches words that pure vocabulary recall misses.</p>
-      <p class="text-gray-600 leading-relaxed text-sm mb-3">Look for words with repeated letters. The Spelling Bee allows you to use letters more than once, which opens up possibilities like double letters (ROOM, DOOR), repeated prefixes (REDO, REUSE), and compound-adjacent words. Many players forget that letter reuse is allowed and miss words that seem too long for the available letters.</p>
+      <h3 class="font-bold text-gray-800 mb-3 mt-7" style="font-size:1.4rem;">Strategies for Finding More Words</h3>
+      <p class="text-gray-600 leading-relaxed mb-4" style="font-size:1.125rem;">Start with the pangrams. Try combining all seven letters in different orders — the pangram often uses a common prefix or suffix attached to a shorter root word. Work systematically through prefixes: RE-, UN-, IN-, OUT-, OVER-. And endings: -ED, -ER, -ING, -LY, -TION. Also look for words with repeated letters — the Spelling Bee allows it.</p>
 
-      <h3 class="text-lg font-bold text-gray-800 mb-2 mt-4">About This Solver</h3>
-      <p class="text-gray-600 leading-relaxed text-sm mb-3">SpellingBee Solver uses a comprehensive English dictionary to find all valid words for any combination of seven letters. It follows the same rules as the official game: words must be at least four letters long, must include the center letter, and can only use the given seven letters (with repetition allowed). Pangrams are automatically detected and highlighted.</p>
-      <p class="text-gray-600 leading-relaxed text-sm mb-3">One thing to keep in mind: our dictionary is broader than the NYT's official word list. The New York Times excludes words that are obscure, potentially offensive, or not well-known enough for their audience. This means our solver might show words that the NYT wouldn't accept as official answers. If a word seems unusual or archaic, the NYT probably excluded it from the official list.</p>
-      <p class="text-gray-600 leading-relaxed text-sm mb-3">The solver processes everything in your browser — no data gets sent to our servers, and results appear instantly. Your letter combinations stay private. This also means the tool works offline once the page has loaded, making it usable anywhere without an internet connection.</p>
+      <h3 class="font-bold text-gray-800 mb-3 mt-7" style="font-size:1.4rem;">About This Solver</h3>
+      <p class="text-gray-600 leading-relaxed mb-4" style="font-size:1.125rem;">SpellingBee Solver uses a comprehensive English dictionary (TWL06) to find all valid words for any combination of seven letters. Words must be at least four letters long, include the center letter, and use only the given letters (with repetition allowed). Pangrams are automatically detected and highlighted.</p>
+      <p class="text-gray-600 leading-relaxed" style="font-size:1.125rem;">Note: our dictionary is broader than the NYT's official word list. The NYT excludes obscure, offensive, or uncommon words. If a word seems unusual, the NYT may not accept it. Everything processes in your browser — no data is sent to our servers — so results appear instantly and the tool works offline.</p>
     </section>
 
     <!-- FAQ Section -->
@@ -589,6 +624,9 @@ const combinedSchema = JSON.stringify([JSON.parse(howToSchema), JSON.parse(faqSc
     input.addEventListener('input', function() {
       const val = this.value.toUpperCase();
       this.value = val;
+      // Sync back to text boxes
+      if (document.getElementById('text-center')) document.getElementById('text-center').value = centerInput.value;
+      if (document.getElementById('text-outer')) document.getElementById('text-outer').value = outerInputList.map(i => i.value).join('');
       if (val.length === 1) {
         if (this.id === 'center-letter') {
           const firstEmpty = outerInputList.find(i => !i.value);
@@ -631,6 +669,8 @@ const combinedSchema = JSON.stringify([JSON.parse(howToSchema), JSON.parse(faqSc
 
   document.getElementById('clear-btn').addEventListener('click', function() {
     allHexInputs.forEach(input => { input.value = ''; });
+    if (document.getElementById('text-center')) document.getElementById('text-center').value = '';
+    if (document.getElementById('text-outer')) document.getElementById('text-outer').value = '';
     centerInput.focus();
     document.getElementById('solver-results').classList.add('hidden');
     document.getElementById('solver-loading').classList.add('hidden');
@@ -650,33 +690,43 @@ const combinedSchema = JSON.stringify([JSON.parse(howToSchema), JSON.parse(faqSc
     outerInputList.forEach((input, i) => {
       input.value = todayOuterLetters[i] || '';
     });
+    if (document.getElementById('text-center')) document.getElementById('text-center').value = todayCenter;
+    if (document.getElementById('text-outer')) document.getElementById('text-outer').value = todayOuterLetters.join('');
 
     solve();
   });
 
-  // Quick input: type all 7 letters at once (first = center)
-  const quickInput = document.getElementById('quick-input');
-  if (quickInput) {
-    quickInput.addEventListener('input', function () {
-      const letters = this.value.replace(/[^a-zA-Z]/g, '').toUpperCase().slice(0, 7);
-      this.value = letters;
-      if (letters.length >= 1) {
-        centerInput.value = letters[0];
-      }
-      outerInputList.forEach((input, i) => {
-        input.value = letters[i + 1] || '';
-      });
-      if (letters.length === 7) {
-        solve();
-      }
-    });
-    quickInput.addEventListener('keydown', function (e) {
-      if (e.key === 'Enter') {
-        e.preventDefault();
-        solve();
-      }
+  // ── Two-box fast entry ──
+  const textCenter = document.getElementById('text-center');
+  const textOuter = document.getElementById('text-outer');
+
+  function syncTextFromHex() {
+    if (textCenter) textCenter.value = centerInput.value;
+    if (textOuter) textOuter.value = outerInputList.map(i => i.value).join('');
+  }
+
+  if (textCenter) {
+    textCenter.addEventListener('input', function () {
+      const v = this.value.replace(/[^a-zA-Z]/g, '').toUpperCase().slice(0, 1);
+      this.value = v;
+      centerInput.value = v;
+      if (v.length === 1 && textOuter) textOuter.focus();
     });
   }
+
+  if (textOuter) {
+    textOuter.addEventListener('input', function () {
+      const v = this.value.replace(/[^a-zA-Z]/g, '').toUpperCase().slice(0, 6);
+      this.value = v;
+      outerInputList.forEach((inp, i) => { inp.value = v[i] || ''; });
+      if (v.length === 6 && textCenter && textCenter.value.length === 1) solve();
+    });
+    textOuter.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') { e.preventDefault(); solve(); }
+    });
+  }
+
+  document.getElementById('text-solve-btn')?.addEventListener('click', solve);
 </script>
 
 <style>

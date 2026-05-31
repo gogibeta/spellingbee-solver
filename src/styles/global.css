@@ -32,11 +32,14 @@
 }
 
 body {
-  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-weight: 400;
   background: var(--snow);
   color: var(--charcoal);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  font-size: 1rem;
+  line-height: 1.6;
 }
 
 /* ========================================
@@ -50,14 +53,14 @@ body {
   border-radius: 12px;
   font-size: 0.9375rem;
   font-weight: 600;
-  color: #64748B;
+  color: #94A3B8;
   transition: all 0.2s ease;
   text-decoration: none;
 }
 
 .mobile-nav-link:hover {
-  color: var(--gold-dark);
-  background: #FFFBEB;
+  color: #F7C948;
+  background: rgba(247, 201, 72, 0.07);
 }
 
 .mobile-nav-link svg {
@@ -492,14 +495,34 @@ body {
   border-radius: 8px;
   font-size: 0.875rem;
   font-weight: 600;
-  color: #64748B;
+  color: #94A3B8;
   transition: all 0.2s ease;
   text-decoration: none;
 }
 
 .nav-link:hover {
-  color: var(--gold-dark);
-  background: #FFFBEB;
+  color: #F7C948;
+  background: rgba(247, 201, 72, 0.07);
+}
+
+.nav-link-active {
+  color: #F7C948 !important;
+  background: rgba(247, 201, 72, 0.1) !important;
+}
+
+/* ========================================
+   Footer Links
+   ======================================== */
+.footer-link {
+  font-size: 0.875rem;
+  color: #64748B;
+  text-decoration: none;
+  transition: color 0.2s ease;
+  font-weight: 500;
+}
+
+.footer-link:hover {
+  color: #F7C948;
 }
 
 /* ========================================
@@ -797,8 +820,60 @@ details summary::before {
   box-shadow: 0 0 0 4px rgba(247, 201, 72, 0.15), 0 4px 16px rgba(247, 201, 72, 0.1);
 }
 
-.solver-quick-input::placeholder {
-  font-size: 0.9375rem;
+/* ========================================
+   Solver Text-Box Inputs (two-box method)
+   ======================================== */
+.solver-box-center {
+  width: 80px;
+  height: 72px;
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border: 2.5px solid #F7C948;
+  border-radius: 16px;
+  outline: none;
+  background: #FFFBEB;
+  color: #92400E;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  flex-shrink: 0;
+}
+
+.solver-box-center:focus {
+  border-color: #D97706;
+  box-shadow: 0 0 0 4px rgba(247, 201, 72, 0.2);
+}
+
+.solver-box-center::placeholder {
+  color: #FCD34D;
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.solver-box-outer {
+  flex: 1;
+  height: 72px;
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.35em;
+  border: 2px solid #E2E8F0;
+  border-radius: 16px;
+  outline: none;
+  background: white;
+  color: #1A1A2E;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.solver-box-outer:focus {
+  border-color: #F7C948;
+  box-shadow: 0 0 0 4px rgba(247, 201, 72, 0.12);
+}
+
+.solver-box-outer::placeholder {
+  font-size: 0.875rem;
   letter-spacing: 0.05em;
   color: #CBD5E1;
   text-transform: none;
