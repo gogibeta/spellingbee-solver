@@ -43,10 +43,249 @@ const websiteSchema = JSON.stringify({
 });
 ---
 
-<BaseLayout title="Spelling Bee Solver - Daily NYT Answers & Hints" description="Solve NYT Spelling Bee puzzles instantly. Get today's answers, hints, word lists, and use our free solver tool. Updated daily." schema={websiteSchema}>
-  <!-- Hero Section -->
-  <section class="relative overflow-hidden bg-gradient-to-br from-gray-900 via-gray-900 to-amber-900">
-    <div class="absolute inset-0 opacity-10">
+<BaseLayout
+  title="Spelling Bee Solver — Daily NYT Answers, Hints & Free Solver Tool"
+  description="Get today's NYT Spelling Bee answers, all words, pangrams & scores instantly. Free solver tool, complete puzzle archive, and deep statistics. Updated daily."
+  schema={websiteSchema}
+>
+
+  <!-- ============================================================
+    HERO SECTION
+  ============================================================ -->
+  <section class="relative bg-[#0F172A] overflow-hidden">
+    <!-- Hex background pattern -->
+    <div class="absolute inset-0 opacity-[0.04] pointer-events-none" aria-hidden="true">
+      <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <pattern id="hp" width="60" height="68" patternUnits="userSpaceOnUse" patternTransform="scale(2.5)">
+            <polygon points="30,2 56,17 56,51 30,66 4,51 4,17" fill="none" stroke="#F7C948" stroke-width="0.6"/>
+          </pattern>
+        </defs>
+        <rect width="100%" height="100%" fill="url(#hp)"/>
+      </svg>
+    </div>
+    <div class="absolute top-0 right-1/4 w-[500px] h-[500px] rounded-full pointer-events-none" style="background:radial-gradient(circle,rgba(247,201,72,.07) 0%,transparent 65%);" aria-hidden="true"></div>
+    <div class="absolute bottom-0 left-1/4 w-[400px] h-[400px] rounded-full pointer-events-none" style="background:radial-gradient(circle,rgba(99,102,241,.05) 0%,transparent 65%);" aria-hidden="true"></div>
+
+    <div class="relative max-w-6xl mx-auto px-4 sm:px-6 py-20 sm:py-28">
+      <div class="flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
+        <!-- Left: Content -->
+        <div class="flex-1 text-center lg:text-left">
+          <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-amber-500/25 bg-amber-500/10 text-amber-400 text-xs font-bold uppercase tracking-widest mb-7">
+            <span class="w-1.5 h-1.5 bg-amber-400 rounded-full animate-pulse" aria-hidden="true"></span>
+            Updated Daily · {puzzleDate}
+          </div>
+          <h1 class="text-5xl sm:text-6xl lg:text-[4.5rem] font-black text-white leading-[1.05] tracking-tight mb-6">
+            NYT Spelling<br/>
+            <span class="text-transparent bg-clip-text" style="background-image:linear-gradient(90deg,#FCD34D 0%,#F59E0B 50%,#FBBF24 100%);">Bee Solver</span>
+          </h1>
+          <p class="text-lg sm:text-xl text-slate-400 max-w-xl mb-10 leading-relaxed mx-auto lg:mx-0">
+            Instant answers for today's NYT Spelling Bee puzzle. Every word, every pangram, deep statistics — and a free solver tool. Updated automatically every day.
+          </p>
+          <div class="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start mb-10">
+            <a href="/today"
+               class="group flex items-center justify-center gap-2.5 px-8 py-4 rounded-2xl font-bold text-base text-white transition-all hover:-translate-y-0.5"
+               style="background:linear-gradient(135deg,#F7C948 0%,#D97706 100%);box-shadow:0 4px 20px rgba(247,201,72,.3);">
+              Today's Answers
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
+            <a href="/solver"
+               class="flex items-center justify-center gap-2.5 px-8 py-4 rounded-2xl font-bold text-base text-white border border-white/15 bg-white/5 hover:bg-white/10 hover:border-white/25 transition-all">
+              <svg width="20" height="22" viewBox="0 0 100 110" aria-hidden="true">
+                <polygon points="50,3 95,27.5 95,72.5 50,97 5,72.5 5,27.5" fill="#F7C948" stroke="#E8A317" stroke-width="3"/>
+                <text x="50" y="62" font-family="system-ui,sans-serif" font-size="38" font-weight="900" fill="white" text-anchor="middle">B</text>
+              </svg>
+              Try the Solver
+            </a>
+          </div>
+          <div class="flex items-center gap-8 justify-center lg:justify-start">
+            <div class="text-center">
+              <p class="text-2xl sm:text-3xl font-black text-white">{totalPuzzles.toLocaleString()}+</p>
+              <p class="text-[11px] font-semibold text-slate-500 uppercase tracking-widest mt-1">Puzzles</p>
+            </div>
+            <div class="w-px h-10 bg-white/10" aria-hidden="true"></div>
+            <div class="text-center">
+              <p class="text-2xl sm:text-3xl font-black text-white">{totalWords.toLocaleString()}+</p>
+              <p class="text-[11px] font-semibold text-slate-500 uppercase tracking-widest mt-1">Words</p>
+            </div>
+            <div class="w-px h-10 bg-white/10" aria-hidden="true"></div>
+            <div class="text-center">
+              <p class="text-2xl sm:text-3xl font-black text-white">Free</p>
+              <p class="text-[11px] font-semibold text-slate-500 uppercase tracking-widest mt-1">Always</p>
+            </div>
+          </div>
+        </div>
+        <!-- Right: Honeycomb -->
+        <div class="flex-shrink-0 relative">
+          <div class="absolute -inset-10 rounded-full pointer-events-none" style="background:radial-gradient(circle,rgba(247,201,72,.08) 0%,transparent 70%);" aria-hidden="true"></div>
+          <div class="relative">
+            <Honeycomb center={center} outer={outerLetters} size="lg" />
+            <div class="text-center mt-5">
+              <p class="text-sm font-bold text-amber-400 tracking-wide">{puzzleDate}</p>
+              <p class="text-xs text-slate-500 mt-1 font-mono tracking-[0.3em]">{allLetters}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+    TODAY'S PUZZLE PREVIEW
+  ============================================================ -->
+  <section class="bg-white py-16 border-b border-gray-100">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6">
+      <div class="flex items-center gap-3 mb-8">
+        <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-amber-50 border border-amber-200">
+          <span class="w-1.5 h-1.5 bg-amber-500 rounded-full animate-pulse" aria-hidden="true"></span>
+          <span class="text-xs font-bold text-amber-700 uppercase tracking-widest">Live Today</span>
+        </div>
+        <h2 class="text-2xl font-bold text-gray-900">Today's Puzzle</h2>
+      </div>
+      <div class="grid lg:grid-cols-[auto,1fr] gap-10 items-start">
+        <div class="flex flex-col items-center mx-auto lg:mx-0">
+          <Honeycomb center={center} outer={outerLetters} size="md" />
+          <p class="text-sm font-semibold text-gray-700 mt-3">{puzzleDate}</p>
+          <p class="text-xs text-gray-400 mt-0.5 font-mono tracking-[0.2em]">{allLetters}</p>
+        </div>
+        <div>
+          <div class="grid grid-cols-3 gap-4 mb-6">
+            <div class="rounded-2xl p-4 text-center border" style="background:linear-gradient(135deg,#FFFBEB,#FEF3C7);border-color:rgba(245,158,11,.2);">
+              <p class="text-3xl font-black text-amber-700">{wordCount}</p>
+              <p class="text-xs font-bold text-amber-600 uppercase tracking-widest mt-1">Words</p>
+            </div>
+            <div class="rounded-2xl p-4 text-center border" style="background:linear-gradient(135deg,#F5F3FF,#EDE9FE);border-color:rgba(124,58,237,.15);">
+              <p class="text-3xl font-black text-purple-700">{pangramCount}</p>
+              <p class="text-xs font-bold text-purple-600 uppercase tracking-widest mt-1">Pangrams</p>
+            </div>
+            <div class="rounded-2xl p-4 text-center border" style="background:linear-gradient(135deg,#ECFDF5,#D1FAE5);border-color:rgba(5,150,105,.15);">
+              <p class="text-3xl font-black text-emerald-700">{totalPoints}</p>
+              <p class="text-xs font-bold text-emerald-600 uppercase tracking-widest mt-1">Max Pts</p>
+            </div>
+          </div>
+          {pangrams.length > 0 && (
+            <div class="mb-6">
+              <p class="text-xs font-bold text-amber-700 mb-2.5 flex items-center gap-1.5 uppercase tracking-wide">
+                <svg width="13" height="13" viewBox="0 0 20 20" fill="#F59E0B" aria-hidden="true"><path d="M10 1l2.39 4.84 5.34.78-3.87 3.77.91 5.33L10 13.27l-4.77 2.51.91-5.33L2.27 6.62l5.34-.78z"/></svg>
+                Today's Pangrams
+              </p>
+              <div class="flex flex-wrap gap-2">
+                {pangrams.map(w => (
+                  <span class="pangram-chip">
+                    <span class="star" aria-hidden="true">&#9733;</span>
+                    {w.word}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
+          <a href="/today" class="inline-flex items-center gap-2 text-sm font-bold text-amber-600 hover:text-amber-700 transition-colors group">
+            View all {wordCount} words with full analysis
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor" class="group-hover:translate-x-1 transition-transform" aria-hidden="true"><path d="M6.5 3.5L11 8l-4.5 4.5L5.5 11 8.5 8 5.5 5z"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+    FEATURES GRID
+  ============================================================ -->
+  <section class="bg-gray-50 py-16 border-b border-gray-100">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl font-black text-gray-900 mb-3">Everything You Need</h2>
+        <p class="text-gray-500 max-w-md mx-auto text-base">Complete tools and data to master the daily NYT Spelling Bee puzzle</p>
+      </div>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        <a href="/today" class="group bg-white border border-gray-200 rounded-2xl p-6 hover:border-amber-300 hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300">
+          <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-5" style="background:linear-gradient(135deg,#FEF3C7,#FDE68A);">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#D97706" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          </div>
+          <h3 class="font-bold text-gray-900 mb-2 group-hover:text-amber-700 transition-colors">Daily Answers</h3>
+          <p class="text-sm text-gray-500 leading-relaxed">Complete word list, pangrams, meanings, and deep puzzle analysis — updated every day</p>
+        </a>
+        <a href="/solver" class="group bg-white border border-gray-200 rounded-2xl p-6 hover:border-amber-300 hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300">
+          <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-5" style="background:linear-gradient(135deg,#FEF3C7,#FDE68A);">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#D97706" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+          </div>
+          <h3 class="font-bold text-gray-900 mb-2 group-hover:text-amber-700 transition-colors">Solver Tool</h3>
+          <p class="text-sm text-gray-500 leading-relaxed">Enter any 7 letters and find every valid word instantly. Pangrams highlighted automatically</p>
+        </a>
+        <a href="/archive" class="group bg-white border border-gray-200 rounded-2xl p-6 hover:border-amber-300 hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300">
+          <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-5" style="background:linear-gradient(135deg,#FEF3C7,#FDE68A);">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#D97706" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+          </div>
+          <h3 class="font-bold text-gray-900 mb-2 group-hover:text-amber-700 transition-colors">Archive</h3>
+          <p class="text-sm text-gray-500 leading-relaxed">Browse {totalPuzzles.toLocaleString()}+ past puzzles with full answers, pangrams and analysis</p>
+        </a>
+        <a href="/stats" class="group bg-white border border-gray-200 rounded-2xl p-6 hover:border-amber-300 hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300">
+          <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-5" style="background:linear-gradient(135deg,#FEF3C7,#FDE68A);">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#D97706" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+          </div>
+          <h3 class="font-bold text-gray-900 mb-2 group-hover:text-amber-700 transition-colors">Statistics</h3>
+          <p class="text-sm text-gray-500 leading-relaxed">Letter frequencies, word length distributions, and full historical puzzle data</p>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+    RECENT PUZZLES
+  ============================================================ -->
+  {recentPuzzles.length > 0 && (
+    <section class="bg-white py-16 border-b border-gray-100">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6">
+        <div class="flex items-center justify-between mb-8">
+          <h2 class="text-2xl font-bold text-gray-900">Recent Puzzles</h2>
+          <a href="/archive" class="inline-flex items-center gap-1.5 text-sm font-bold text-amber-600 hover:text-amber-700 transition-colors group">
+            View all
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor" class="group-hover:translate-x-0.5 transition-transform" aria-hidden="true"><path d="M6.5 3.5L11 8l-4.5 4.5L5.5 11 8.5 8 5.5 5z"/></svg>
+          </a>
+        </div>
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {recentPuzzles.map(p => (
+            <a href="/archive" data-archive-slug={archiveSlug(p.date)} data-archive-date={p.date}
+               class="group bg-white border border-gray-200 rounded-2xl p-5 hover:border-amber-300 hover:shadow-md hover:-translate-y-0.5 transition-all">
+              <div class="flex items-center gap-3 mb-4">
+                <span class="letter-circle letter-circle-center flex-shrink-0" style="width:40px;height:40px;font-size:1rem;">{p.letters}</span>
+                <div>
+                  <p class="font-bold text-gray-800 group-hover:text-amber-700 transition-colors">{p.date}</p>
+                  <p class="text-xs text-gray-400 font-mono tracking-widest mt-0.5">{p.all_letters}</p>
+                </div>
+              </div>
+              <div class="flex items-center gap-4 pt-3 border-t border-gray-100 text-sm">
+                <span class="font-semibold text-gray-600">{p.word_count} words</span>
+                <span class="flex items-center gap-1 font-bold text-amber-500">
+                  <svg width="11" height="11" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M10 1l2.39 4.84 5.34.78-3.87 3.77.91 5.33L10 13.27l-4.77 2.51.91-5.33L2.27 6.62l5.34-.78z"/></svg>
+                  {p.pangrams_count} pangram{p.pangrams_count !== 1 ? 's' : ''}
+                </span>
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- ============================================================
+    SEO CONTENT — texts kept verbatim
+  ============================================================ -->
+  <section class="bg-gray-50 py-14 border-t border-gray-100">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6">
+      <h2 class="text-xl font-bold text-gray-800 mb-4">What Is the NYT Spelling Bee?</h2>
+      <p class="text-gray-600 leading-relaxed mb-3">The New York Times Spelling Bee is a daily word puzzle where players must find as many words as possible using seven letters arranged in a honeycomb pattern. Every word must include the center letter, must be at least four letters long, and each letter can be used multiple times. Words that use all seven letters are called "pangrams" and earn bonus points. The puzzle refreshes every day at midnight Eastern time, and thousands of players compete to reach the top rank of Queen Bee.</p>
+      <p class="text-gray-600 leading-relaxed mb-3">The game launched in the NYT Magazine in 2018 and quickly became one of the most popular features in the NYT Games app. Unlike Wordle's single-guess-per-day mechanic, the Spelling Bee lets you keep guessing words until you find them all or give up. The satisfaction of discovering a pangram — especially a perfect pangram that uses each letter exactly once — keeps players coming back every day.</p>
+      <p class="text-gray-600 leading-relaxed mb-3">Scoring follows a consistent system: four-letter words earn 1 point, while longer words earn points equal to their letter count. Pangrams get a 7-point bonus, making them the highest-value words in any puzzle. Progress tiers range from Beginner (0% of total points) to Queen Bee (100%), with Genius at 70% being the target most players aim for.</p>
+
+      <h3 class="text-lg font-bold text-gray-800 mb-3 mt-6">How SpellingBee Solver Helps You Play Better</h3>
+      <p class="text-gray-600 leading-relaxed mb-3">SpellingBee Solver provides three core tools for Spelling Bee players. The <strong>daily answers page</strong> shows the complete word list for today's puzzle, including pangram highlights, word counts by length, and scoring data. The <strong>solver tool</strong> lets you enter any seven letters and instantly find all valid English words that can be formed from them — useful for checking your own puzzle or exploring hypothetical letter combinations. The <strong>puzzle archive</strong> contains {totalPuzzles.toLocaleString()}+ past puzzles with full answer data, making it easy to review old games or study patterns.</p>
+      <p class="text-gray-600 leading-relaxed mb-3">Our statistics section breaks down the data across the entire puzzle history. You can see which letters appear most often as the center letter, how word length distributions trend over time, and how frequently pangrams and perfect pangrams occur. This information helps players develop better solving strategies by understanding the patterns the NYT uses when constructing puzzles.</p>
+      <p class="text-gray-600 leading-relaxed">Everything on SpellingBee Solver is free with no sign-up required. The solver runs entirely in your browser for instant results, and the daily answers update automatically each day. Whether you're a casual player who wants to check a few missing words or a dedicated solver aiming for Queen Bee every day, our tools give you the data you need without any paywall or subscription.</p>
+    </div>
+  </section>
+
+</BaseLayout>
       <svg width="100%" height="100%">
         <defs>
           <pattern id="hex-pattern" width="60" height="68" patternUnits="userSpaceOnUse" patternTransform="scale(2)">

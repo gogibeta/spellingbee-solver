@@ -297,53 +297,58 @@ const faqSchema = JSON.stringify({
 ---
 
 <BaseLayout title={pageTitle} description={pageDescription} schema={faqSchema}>
-  <div class="max-w-6xl mx-auto px-4 sm:px-6 py-8">
-    <div class="flex flex-col lg:flex-row gap-8">
-      <div class="flex-1 min-w-0">
-        <div class="mb-8">
-          <h1 class="text-2xl sm:text-3xl font-bold text-gray-900">{pageTitle}</h1>
-        </div>
-
-        <div class="flex flex-col sm:flex-row items-center sm:items-start gap-8 mb-8">
-          <div class="flex-shrink-0">
-            <Honeycomb center={center} outer={outerLetters} size="md" />
+  <!-- Dark hero with puzzle info -->
+  <section class="today-page-hero px-4 sm:px-6 py-10 sm:py-14">
+    <div class="max-w-6xl mx-auto">
+      <h1 class="text-2xl sm:text-3xl lg:text-4xl font-black text-white mb-8 leading-tight">{pageTitle}</h1>
+      <div class="flex flex-col sm:flex-row items-center sm:items-start gap-8">
+        <div class="flex-shrink-0">
+          <Honeycomb center={center} outer={outerLetters} size="md" />
+          <div class="text-center mt-3">
+            <p class="text-xs text-slate-400 font-mono tracking-[0.2em]">{allLetters}</p>
           </div>
-          <div class="flex-1 w-full">
-            <div class="grid grid-cols-2 gap-3 mb-5">
-              <div class="stat-card">
-                <p class="stat-value">{puzzle.word_count}</p>
-                <p class="stat-label">Answers</p>
-              </div>
-              <div class="stat-card">
-                <p class="stat-value">{puzzle.pangrams_count}</p>
-                <p class="stat-label">Pangrams</p>
-              </div>
-              <div class="stat-card">
-                <p class="stat-value">{totalPoints}</p>
-                <p class="stat-label">Max Score</p>
-              </div>
-              <div class="stat-card">
-                <p class="stat-value">{hasPerfectPangram ? 'Yes' : '--'}</p>
-                <p class="stat-label">Perfect Pangram</p>
-              </div>
+        </div>
+        <div class="flex-1 w-full">
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-5">
+            <div class="rounded-2xl p-4 text-center" style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.1);">
+              <p class="text-3xl font-black text-white">{puzzle.word_count}</p>
+              <p class="text-[11px] font-bold text-slate-400 uppercase tracking-widest mt-1">Answers</p>
             </div>
-            <div class="text-sm text-gray-500 mb-2">
-              <span class="font-semibold text-purple-600">Genius threshold:</span> {geniusThreshold} points
+            <div class="rounded-2xl p-4 text-center" style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.1);">
+              <p class="text-3xl font-black text-amber-400">{puzzle.pangrams_count}</p>
+              <p class="text-[11px] font-bold text-slate-400 uppercase tracking-widest mt-1">Pangrams</p>
             </div>
-            <div class="text-sm text-gray-500">
-              <span class="font-semibold text-gray-700">Center:</span>
-              <span class="letter-circle letter-circle-center !w-7 !h-7 !text-xs inline-flex">{center}</span>
-              <span class="mx-2 text-gray-300">|</span>
-              <span class="font-semibold text-gray-700">Letters:</span>
+            <div class="rounded-2xl p-4 text-center" style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.1);">
+              <p class="text-3xl font-black text-white">{totalPoints}</p>
+              <p class="text-[11px] font-bold text-slate-400 uppercase tracking-widest mt-1">Max Score</p>
+            </div>
+            <div class="rounded-2xl p-4 text-center" style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.1);">
+              <p class="text-3xl font-black text-white">{hasPerfectPangram ? 'Yes' : '--'}</p>
+              <p class="text-[11px] font-bold text-slate-400 uppercase tracking-widest mt-1">Perfect Pan.</p>
+            </div>
+          </div>
+          <div class="flex flex-wrap items-center gap-3 text-sm">
+            <span class="text-slate-400 font-semibold">Genius: <span class="text-purple-300 font-black">{geniusThreshold} pts</span></span>
+            <span class="text-slate-600">·</span>
+            <span class="text-slate-400 font-semibold">Center:</span>
+            <span class="inline-flex items-center justify-center w-7 h-7 rounded-full bg-amber-400 text-white text-xs font-black">{center}</span>
+            <div class="flex flex-wrap gap-1">
               {allLetters.split('').map((letter) => (
                 <span class:list={[
-                  'inline-flex items-center justify-center w-6 h-6 rounded text-xs font-bold mx-0.5',
-                  letter === center ? 'bg-amber-100 text-amber-700' : 'bg-gray-100 text-gray-600',
+                  'inline-flex items-center justify-center w-6 h-6 rounded text-xs font-black',
+                  letter === center ? 'bg-amber-400 text-white' : 'bg-white/10 text-slate-300',
                 ]}>{letter}</span>
               ))}
             </div>
           </div>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 py-8">
+    <div class="flex flex-col lg:flex-row gap-8">
+      <div class="flex-1 min-w-0">
 
         <details class="card-elevated p-6 mb-8 group">
           <summary class="font-semibold text-gray-800 cursor-pointer flex items-center justify-between">
@@ -477,11 +482,8 @@ const faqSchema = JSON.stringify({
                 <div class="flex items-center gap-3">
                   <span class="w-16 text-sm font-bold text-gray-600 text-right flex-shrink-0">{length}-letter</span>
                   <div class="flex-1">
-                    <div class="w-full bg-gray-100 rounded-full h-7 overflow-hidden">
-                      <div class:list={[
-                        'h-7 rounded-full flex items-center pl-3 text-xs font-bold',
-                        hasPangramAtLength ? 'bg-gradient-to-r from-amber-300 to-amber-500 text-white' : 'bg-gray-300 text-gray-700',
-                      ]} style={`width: ${barWidth}%`}>
+                    <div class="cbar-track" style="height:32px;">
+                      <div class:list={['cbar', hasPangramAtLength ? 'cbar-amber-active' : 'cbar-default']} style={`width: ${barWidth}%`}>
                         {count}
                       </div>
                     </div>
@@ -505,11 +507,8 @@ const faqSchema = JSON.stringify({
                 <div class="flex items-center gap-3">
                   <span class="w-16 text-sm font-bold text-gray-600 text-right flex-shrink-0">{length}-letter</span>
                   <div class="flex-1">
-                    <div class="w-full bg-gray-100 rounded-full h-7 overflow-hidden">
-                      <div class:list={[
-                        'h-7 rounded-full flex items-center pl-3 text-xs font-bold',
-                        hasPangramAtLength ? 'bg-gradient-to-r from-emerald-300 to-emerald-500 text-white' : 'bg-emerald-200 text-emerald-800',
-                      ]} style={`width: ${barWidth}%`}>
+                    <div class="cbar-track" style="height:32px;">
+                      <div class:list={['cbar', hasPangramAtLength ? 'cbar-emerald-active' : 'cbar-emerald']} style={`width: ${barWidth}%`}>
                         {points} pts
                       </div>
                     </div>
@@ -617,11 +616,8 @@ const faqSchema = JSON.stringify({
                       {formatHistogramRange(bin)}
                     </span>
                     <div class="flex-1">
-                      <div class="w-full bg-gray-100 rounded-full h-5 overflow-hidden">
-                        <div class:list={[
-                          'h-5 rounded-full flex items-center pl-2 text-[10px] font-bold',
-                          bin.isCurrent ? 'bg-gradient-to-r from-amber-400 to-amber-500 text-white' : 'bg-gray-300 text-gray-600',
-                        ]} style={`width: ${barWidth}%`}>
+                      <div class="cbar-track" style="height:28px;">
+                        <div class:list={['cbar', bin.isCurrent ? 'cbar-amber-active' : 'cbar-default']} style={`width: ${barWidth}%`}>
                           {bin.isCurrent ? 'Current' : `${roundTo(safeNum(bin.percentage), 1)}%`}
                         </div>
                       </div>
@@ -664,11 +660,8 @@ const faqSchema = JSON.stringify({
                       {formatHistogramRange(bin)}
                     </span>
                     <div class="flex-1">
-                      <div class="w-full bg-gray-100 rounded-full h-5 overflow-hidden">
-                        <div class:list={[
-                          'h-5 rounded-full flex items-center pl-2 text-[10px] font-bold',
-                          bin.isCurrent ? 'bg-gradient-to-r from-violet-400 to-violet-500 text-white' : 'bg-gray-300 text-gray-600',
-                        ]} style={`width: ${barWidth}%`}>
+                      <div class="cbar-track" style="height:28px;">
+                        <div class:list={['cbar', bin.isCurrent ? 'cbar-violet-active' : 'cbar-default']} style={`width: ${barWidth}%`}>
                           {bin.isCurrent ? 'Current' : `${roundTo(safeNum(bin.percentage), 1)}%`}
                         </div>
                       </div>
@@ -701,11 +694,8 @@ const faqSchema = JSON.stringify({
                       {item.value}-letter
                     </span>
                     <div class="flex-1">
-                      <div class="w-full bg-gray-100 rounded-full h-5 overflow-hidden">
-                        <div class:list={[
-                          'h-5 rounded-full flex items-center pl-2 text-[10px] font-bold',
-                          item.isCurrent ? 'bg-gradient-to-r from-purple-400 to-purple-500 text-white' : 'bg-gray-300 text-gray-600',
-                        ]} style={`width: ${barWidth}%`}>
+                      <div class="cbar-track" style="height:28px;">
+                        <div class:list={['cbar', item.isCurrent ? 'cbar-purple-active' : 'cbar-default']} style={`width: ${barWidth}%`}>
                           {item.isCurrent ? 'Current' : `${roundTo(safeNum(item.percentage), 1)}%`}
                         </div>
                       </div>
@@ -736,11 +726,8 @@ const faqSchema = JSON.stringify({
                       {formatHistogramRange(bin, 1)}
                     </span>
                     <div class="flex-1">
-                      <div class="w-full bg-gray-100 rounded-full h-5 overflow-hidden">
-                        <div class:list={[
-                          'h-5 rounded-full flex items-center pl-2 text-[10px] font-bold',
-                          bin.isCurrent ? 'bg-gradient-to-r from-emerald-400 to-emerald-500 text-white' : 'bg-gray-300 text-gray-600',
-                        ]} style={`width: ${barWidth}%`}>
+                      <div class="cbar-track" style="height:28px;">
+                        <div class:list={['cbar', bin.isCurrent ? 'cbar-emerald-active' : 'cbar-default']} style={`width: ${barWidth}%`}>
                           {bin.isCurrent ? 'Current' : `${roundTo(safeNum(bin.percentage), 1)}%`}
                         </div>
                       </div>

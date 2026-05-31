@@ -98,17 +98,45 @@ const faqSchema = JSON.stringify({
 const combinedSchema = JSON.stringify([JSON.parse(howToSchema), JSON.parse(faqSchema)]);
 ---
 
-<BaseLayout title="Spelling Bee Solver - Find All Words Instantly" description="Free NYT Spelling Bee solver tool. Enter your 7 letters and find all possible words, pangrams, and scores instantly. Works with today's puzzle or any letter combination." schema={combinedSchema}>
-  <div class="max-w-5xl mx-auto px-4 sm:px-6 py-8 sm:py-10">
-    <!-- Header -->
-    <div class="text-center mb-8">
-      <h1 class="text-3xl sm:text-4xl font-black text-gray-900 mb-2">Spelling Bee Solver</h1>
-      <p class="text-gray-500 text-lg">Enter your letters and find all possible words instantly</p>
+<BaseLayout title="Spelling Bee Solver — Find All Words Instantly" description="Free NYT Spelling Bee solver tool. Enter your 7 letters and find all possible words, pangrams, and scores instantly. Works with today's puzzle or any letter combination." schema={combinedSchema}>
+
+  <!-- Dark hero banner -->
+  <section class="solver-hero px-4 sm:px-6 py-10 sm:py-14">
+    <div class="max-w-5xl mx-auto text-center">
+      <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-amber-500/25 bg-amber-500/10 text-amber-400 text-xs font-bold uppercase tracking-widest mb-5">
+        <svg width="14" height="14" viewBox="0 0 100 110" aria-hidden="true"><polygon points="50,3 95,27.5 95,72.5 50,97 5,72.5 5,27.5" fill="#F7C948" stroke="none"/></svg>
+        Free · Instant · No Sign-up
+      </div>
+      <h1 class="text-3xl sm:text-4xl lg:text-5xl font-black text-white mb-4 leading-tight tracking-tight">
+        Spelling Bee<br/>
+        <span class="text-transparent bg-clip-text" style="background-image:linear-gradient(90deg,#FCD34D 0%,#F59E0B 100%);">Solver Tool</span>
+      </h1>
+      <p class="text-slate-400 text-lg max-w-xl mx-auto leading-relaxed">
+        Enter any 7 letters — get every valid word, pangram, and score instantly. Works with today's NYT puzzle or any combination.
+      </p>
     </div>
+  </section>
+
+  <div class="max-w-5xl mx-auto px-4 sm:px-6 py-8 sm:py-10">
 
     <div class="flex flex-col lg:flex-row gap-8 items-start">
       <!-- Left: Input & Honeycomb -->
       <div class="w-full lg:w-auto flex-shrink-0">
+        <!-- Quick type input -->
+        <div class="mb-5 card-elevated p-5">
+          <label class="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-2.5">Quick Enter — Type all 7 letters (center first)</label>
+          <input
+            type="text"
+            id="quick-input"
+            class="solver-quick-input"
+            maxlength="7"
+            placeholder="e.g. ABCDEFG — center letter first"
+            autocomplete="off"
+            spellcheck="false"
+          />
+          <p class="text-[11px] text-gray-400 mt-2 text-center">First letter = center · Or use the hex grid below</p>
+        </div>
+
         <div class="card-elevated p-6 sm:p-8">
           <!-- Interactive Honeycomb Input -->
           <div id="solver-hex-container" class="honeycomb-solver mx-auto">
@@ -625,6 +653,30 @@ const combinedSchema = JSON.stringify([JSON.parse(howToSchema), JSON.parse(faqSc
 
     solve();
   });
+
+  // Quick input: type all 7 letters at once (first = center)
+  const quickInput = document.getElementById('quick-input');
+  if (quickInput) {
+    quickInput.addEventListener('input', function () {
+      const letters = this.value.replace(/[^a-zA-Z]/g, '').toUpperCase().slice(0, 7);
+      this.value = letters;
+      if (letters.length >= 1) {
+        centerInput.value = letters[0];
+      }
+      outerInputList.forEach((input, i) => {
+        input.value = letters[i + 1] || '';
+      });
+      if (letters.length === 7) {
+        solve();
+      }
+    });
+    quickInput.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        solve();
+      }
+    });
+  }
 </script>
 
 <style>

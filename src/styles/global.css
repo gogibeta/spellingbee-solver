@@ -613,3 +613,194 @@ details summary::before {
   content: '';
   display: none;
 }
+
+/* ========================================
+   Enhanced Chart Bars (animated, gradient)
+   ======================================== */
+
+.cbar-track {
+  width: 100%;
+  background: #F1F5F9;
+  border-radius: 12px;
+  overflow: hidden;
+  position: relative;
+}
+
+.cbar {
+  height: 100%;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  padding: 0 14px;
+  font-size: 11px;
+  font-weight: 700;
+  white-space: nowrap;
+  animation: cbarReveal 0.75s cubic-bezier(0.22, 1, 0.36, 1) 0.15s both;
+}
+
+@keyframes cbarReveal {
+  from { clip-path: inset(0 100% 0 0); }
+  to   { clip-path: inset(0 0% 0 0); }
+}
+
+.cbar-default {
+  background: linear-gradient(90deg, #E2E8F0, #CBD5E1);
+  color: #94A3B8;
+}
+
+.cbar-amber {
+  background: linear-gradient(90deg, #FCD34D, #F59E0B);
+  color: #78350F;
+}
+
+.cbar-amber-active {
+  background: linear-gradient(90deg, #F7C948 0%, #D97706 100%);
+  color: white;
+  box-shadow: 0 2px 18px rgba(247, 201, 72, 0.55);
+}
+
+.cbar-violet-active {
+  background: linear-gradient(90deg, #A78BFA 0%, #6D28D9 100%);
+  color: white;
+  box-shadow: 0 2px 18px rgba(109, 40, 217, 0.45);
+}
+
+.cbar-purple-active {
+  background: linear-gradient(90deg, #C084FC 0%, #7E22CE 100%);
+  color: white;
+  box-shadow: 0 2px 18px rgba(126, 34, 206, 0.45);
+}
+
+.cbar-emerald-active {
+  background: linear-gradient(90deg, #34D399 0%, #047857 100%);
+  color: white;
+  box-shadow: 0 2px 18px rgba(5, 150, 105, 0.45);
+}
+
+.cbar-emerald {
+  background: linear-gradient(90deg, #A7F3D0, #10B981);
+  color: #064E3B;
+}
+
+.cbar-sky {
+  background: linear-gradient(90deg, #7DD3FC, #0284C7);
+  color: white;
+}
+
+.cbar-amber-light {
+  background: linear-gradient(90deg, #FDE68A, #FBBF24);
+  color: #78350F;
+}
+
+.cbar-emerald-light {
+  background: linear-gradient(90deg, #A7F3D0, #34D399);
+  color: #065F46;
+}
+
+/* ========================================
+   Today Page Hero (dark header section)
+   ======================================== */
+
+.today-page-hero {
+  background: linear-gradient(135deg, #0F172A 0%, #1E293B 55%, #1a2540 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.today-page-hero::before {
+  content: '';
+  position: absolute;
+  top: -40%;
+  right: -10%;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(247, 201, 72, 0.07) 0%, transparent 65%);
+  pointer-events: none;
+}
+
+.today-page-hero::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(247, 201, 72, 0.25), transparent);
+}
+
+/* ========================================
+   Archive — improved list & detail
+   ======================================== */
+
+.archive-item-active {
+  background: linear-gradient(90deg, rgba(254, 243, 199, 0.9) 0%, rgba(254, 243, 199, 0.2) 100%) !important;
+  border-left: 3px solid #F7C948 !important;
+}
+
+.archive-detail-hero {
+  background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+  border-radius: 20px;
+  overflow: hidden;
+  position: relative;
+}
+
+.archive-detail-hero::before {
+  content: '';
+  position: absolute;
+  top: -30%;
+  right: -10%;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(247, 201, 72, 0.06) 0%, transparent 65%);
+  pointer-events: none;
+}
+
+/* ========================================
+   Solver Hero & Quick Input
+   ======================================== */
+
+.solver-hero {
+  background: linear-gradient(135deg, #0F172A 0%, #1E293B 55%, #1a2540 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.solver-hero::before {
+  content: '';
+  position: absolute;
+  top: -40%;
+  left: -10%;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(247, 201, 72, 0.05) 0%, transparent 65%);
+  pointer-events: none;
+}
+
+.solver-quick-input {
+  width: 100%;
+  padding: 16px 24px;
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  border: 2px solid #E2E8F0;
+  border-radius: 16px;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  background: white;
+  text-align: center;
+  color: #1A1A2E;
+}
+
+.solver-quick-input:focus {
+  border-color: #F7C948;
+  box-shadow: 0 0 0 4px rgba(247, 201, 72, 0.15), 0 4px 16px rgba(247, 201, 72, 0.1);
+}
+
+.solver-quick-input::placeholder {
+  font-size: 0.9375rem;
+  letter-spacing: 0.05em;
+  color: #CBD5E1;
+  text-transform: none;
+  font-weight: 400;
+}
