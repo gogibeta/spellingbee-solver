@@ -2175,6 +2175,7 @@ router.get('/', async (request, env) => {
         byDate: { method: 'GET', path: '/api/search/date/:query', description: 'Search puzzles by date (supports YYYY, YYYY-MM, YYYY-MM-DD, Month Day Year)' },
         byLetter: { method: 'GET', path: '/api/search/letter/:letter', params: '?centerOnly=true', description: 'Search puzzles by letter' },
         byId: { method: 'GET', path: '/api/search/id/:id', description: 'Search puzzle by ID' },
+        byWord: { method: 'GET', path: '/api/search/word/:word', description: 'Find all puzzles where a specific word appeared as an answer' },
         fiveLetterWords: { method: 'GET', path: '/api/searchFiveLetterWords/:letter', description: 'Find 5-letter words containing a letter' },
       },
       statistics: {
@@ -2995,6 +2996,47 @@ router.get('/api/searchWordle/([A-Za-z])', async (request, env, params) => {
     possibleWordleWords: result.results,
     total: result.results.length,
     _deprecated: 'Use /api/searchFiveLetterWords/:letter instead',
+  }, {}, CACHE_TTL_READONLY));
+});
+
+// Search puzzles by word — find all puzzles where a specific word was an answer
+router.get('/api/search/word/([A-Za-z]+)', async (request, env, params) => {
+  const rawWord = params[0];
+  if (!rawWord || rawWord.length < 2 || rawWord.length > 30) {
+    return jsonResponse(errorResponse('Word must be 2–30 letters', 400), 400);
+  }
+  const word = rawWord.toLowerCase().replace(/[^a-z]/g, '');
+  if (!word) {
+    return jsonResponse(errorResponse('Invalid word — letters only', 400), 400);
+  }
+
+  const stmt = env.DB.prepare(`
+    SELECT p.puzzle_id, p.date, p.date_iso, p.letters, p.all_letters,
+           p.word_count, p.pangrams_count,
+           w.is_pangram, w.length as word_length
+    FROM words w
+    JOIN puzzles p ON w.puzzle_id = p.puzzle_id
+    WHERE w.word = ?
+    ORDER BY p.date_iso DESC
+  `).bind(word);
+
+  const result = await stmt.all();
+  const rows = result.results || [];
+
+  return jsonResponse(successResponse({
+    word,
+    totalAppearances: rows.length,
+    appearances: rows.map(r => ({
+      puzzle_id: r.puzzle_id,
+      date: r.date,
+      date_iso: r.date_iso,
+      slug: r.date ? r.date.toLowerCase().replace(/,?\s+/g, '-') : '',
+      letters: r.letters,
+      all_letters: r.all_letters,
+      word_count: r.word_count,
+      pangrams_count: r.pangrams_count,
+      was_pangram: r.is_pangram === 1,
+    })),
   }, {}, CACHE_TTL_READONLY));
 });
 

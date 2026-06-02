@@ -1,4 +1,4 @@
----
+﻿---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { formatDateURL } from '../lib/utils';
 import { readPublicJson } from '../lib/site-data';
@@ -12,7 +12,7 @@ const overview = stats.overview || {};
 const averages = stats.averages || {};
 const extremes = stats.extremes || {};
 
-const safeLocale = (val) => (val != null && typeof val === 'number') ? val.toLocaleString() : (val != null ? String(val) : '—');
+const safeLocale = (val) => (val != null && typeof val === 'number') ? val.toLocaleString() : (val != null ? String(val) : '-');
 const safeNum = (val, def = 0) => (val != null && !isNaN(Number(val))) ? Number(val) : def;
 const archiveSlug = (date) => formatDateURL(date);
 
@@ -27,149 +27,195 @@ const faqSchema = JSON.stringify({
     {
       "@type": "Question",
       "name": "What is the most common center letter in the Spelling Bee?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": centerFreq.length > 0 ? `The most common center letter is ${centerFreq[0].letter}, appearing as the center letter in ${centerFreq[0].count} puzzles (${centerFreq[0].percentage}% of all puzzles).` : "Check our statistics page for the latest center letter frequency data."
-      }
+      "acceptedAnswer": { "@type": "Answer", "text": centerFreq.length > 0 ? `The most common center letter is ${centerFreq[0].letter}, appearing in ${centerFreq[0].count} puzzles (${centerFreq[0].percentage}%).` : "Check our statistics page." }
     },
     {
       "@type": "Question",
       "name": "How many words does the average Spelling Bee puzzle have?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": `The average Spelling Bee puzzle contains approximately ${safeNum(averages.wordsPerPuzzle).toFixed(1)} words, with an average of ${safeNum(averages.pangramsPerPuzzle).toFixed(1)} pangrams per puzzle.`
-      }
+      "acceptedAnswer": { "@type": "Answer", "text": `The average puzzle contains approximately ${safeNum(averages.wordsPerPuzzle).toFixed(1)} words, with ${safeNum(averages.pangramsPerPuzzle).toFixed(1)} pangrams per puzzle.` }
     }
   ]
 });
 ---
 
-<BaseLayout title="Spelling Bee Statistics & Insights" description={`Comprehensive statistics across ${safeLocale(overview.totalPuzzles)} NYT Spelling Bee puzzles. Letter frequencies, word distributions, and puzzle data.`} schema={faqSchema}>
-  <div class="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-10">
-    <!-- Header -->
-    <div class="mb-8">
-      <h1 class="text-3xl font-bold text-gray-900 mb-2">Spelling Bee Statistics & Insights</h1>
-      <p class="text-gray-500">Data analysis across {safeLocale(overview.totalPuzzles)} puzzles</p>
-    </div>
+<BaseLayout title="Spelling Bee Statistics & Insights | Data Across 2,900+ Puzzles" description={`Explore comprehensive statistics across ${safeLocale(overview.totalPuzzles)} NYT Spelling Bee puzzles. Search any word, letter frequencies, word distributions, and historical records.`} schema={faqSchema}>
 
-    <!-- Overview Cards -->
+  <!-- ── HERO ── -->
+  <section class="relative overflow-hidden" style="background:linear-gradient(135deg,#0F172A 0%,#1E293B 100%);">
+    <div class="absolute inset-0 opacity-[0.04]" style="background-image:url(\"data:image/svg+xml,%3Csvg width='60' height='70' viewBox='0 0 60 70' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 2L58 17.5V52.5L30 68L2 52.5V17.5L30 2Z' stroke='%23F7C948' stroke-width='1'/%3E%3C/svg%3E\");background-size:60px 70px;"></div>
+    <div class="relative max-w-6xl mx-auto px-4 sm:px-6 py-12 sm:py-16 text-center">
+      <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full mb-6 border" style="background:rgba(247,201,72,.08);border-color:rgba(247,201,72,.2);">
+        <svg width="13" height="13" viewBox="0 0 20 20" fill="#F7C948" aria-hidden="true"><path d="M10 1l2.39 4.84 5.34.78-3.87 3.77.91 5.33L10 13.27l-4.77 2.51.91-5.33L2.27 6.62l5.34-.78z"/></svg>
+        <span class="text-xs font-bold tracking-widest uppercase" style="color:#F7C948;">Puzzle Intelligence</span>
+      </div>
+      <h1 class="text-4xl sm:text-5xl font-black text-white mb-4 leading-tight">
+        Spelling Bee<br/>
+        <span class="text-transparent bg-clip-text" style="background-image:linear-gradient(90deg,#FCD34D 0%,#F59E0B 100%);">Statistics &amp; Insights</span>
+      </h1>
+      <p class="text-slate-400 text-lg max-w-xl mx-auto">Deep data across {safeLocale(overview.totalPuzzles)} puzzles &mdash; letter patterns, records, and historical trends.</p>
+    </div>
+  </section>
+
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 py-10">
+
+    <!-- ── OVERVIEW CARDS ── -->
     <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-10">
-      <div class="bg-gradient-to-br from-amber-400 to-amber-500 rounded-2xl p-5 text-white shadow-lg shadow-amber-200/50">
-        <p class="text-3xl font-black">{safeLocale(overview.totalPuzzles)}</p>
-        <p class="text-amber-100 text-sm font-medium mt-1">Total Puzzles</p>
+      <div class="rounded-2xl p-5 text-center" style="background:linear-gradient(135deg,#F7C948 0%,#D97706 100%);box-shadow:0 8px 24px rgba(247,201,72,.25);">
+        <p class="text-3xl font-black text-white">{safeLocale(overview.totalPuzzles)}</p>
+        <p class="text-amber-100 text-xs font-bold uppercase tracking-wider mt-1">Puzzles</p>
       </div>
-      <div class="card p-5">
+      <div class="card-elevated p-5 text-center">
         <p class="text-3xl font-black text-gray-800">{safeLocale(overview.totalWords)}</p>
-        <p class="text-gray-500 text-sm font-medium mt-1">Total Words</p>
+        <p class="text-gray-500 text-xs font-bold uppercase tracking-wider mt-1">Total Words</p>
       </div>
-      <div class="card p-5">
+      <div class="card-elevated p-5 text-center">
         <p class="text-3xl font-black text-gray-800">{safeLocale(overview.totalPangrams)}</p>
-        <p class="text-gray-500 text-sm font-medium mt-1">Total Pangrams</p>
+        <p class="text-gray-500 text-xs font-bold uppercase tracking-wider mt-1">Pangrams</p>
       </div>
-      <div class="card p-5">
+      <div class="card-elevated p-5 text-center">
         <p class="text-3xl font-black text-gray-800">{safeLocale(overview.totalPerfectPangrams)}</p>
-        <p class="text-gray-500 text-sm font-medium mt-1">Perfect Pangrams</p>
+        <p class="text-gray-500 text-xs font-bold uppercase tracking-wider mt-1">Perfect Pangrams</p>
       </div>
     </div>
 
-    <!-- Averages & Extremes -->
+    <!-- ── WORD SEARCH TOOL ── -->
+    <div class="card-elevated overflow-hidden mb-10">
+      <div class="px-6 py-4 flex items-center justify-between" style="background:linear-gradient(90deg,#0F172A 0%,#1E293B 100%);">
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0" style="background:rgba(247,201,72,.15);border:1px solid rgba(247,201,72,.25);">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#F7C948" stroke-width="2.5" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          </div>
+          <div>
+            <p class="font-black text-white text-sm">Word History Search</p>
+            <p class="text-slate-400 text-xs">Find every puzzle where a specific word appeared</p>
+          </div>
+        </div>
+        <span class="text-[10px] font-black uppercase tracking-widest px-2.5 py-1 rounded-full" style="background:rgba(247,201,72,.15);color:#F7C948;border:1px solid rgba(247,201,72,.2);">New</span>
+      </div>
+      <div class="p-6">
+        <div class="flex gap-3 mb-1">
+          <input
+            type="text"
+            id="word-search-input"
+            placeholder="e.g. WINDMILL, APPLE, COGENT..."
+            class="flex-1 h-12 px-4 rounded-xl border-2 border-gray-200 text-base font-semibold text-gray-800 outline-none transition-all focus:border-amber-400"
+            style="background:#FAFAFA;"
+            maxlength="30"
+            autocomplete="off"
+            spellcheck="false"
+            aria-label="Search word history"
+          />
+          <button
+            id="word-search-btn"
+            type="button"
+            class="h-12 px-6 rounded-xl font-black text-white text-sm flex-shrink-0 transition-all active:scale-95"
+            style="background:linear-gradient(135deg,#F7C948 0%,#D97706 100%);box-shadow:0 4px 12px rgba(217,119,6,.3);"
+          >
+            <svg class="inline mr-1.5" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+            Search
+          </button>
+        </div>
+        <p class="text-xs text-gray-400 mb-5">Search the full archive database &mdash; finds official NYT puzzle answers only.</p>
+        <!-- Result area -->
+        <div id="word-search-result" class="hidden">
+          <div id="word-search-loading" class="hidden py-8 text-center">
+            <div class="inline-block w-8 h-8 border-[3px] border-amber-400 border-t-transparent rounded-full animate-spin"></div>
+            <p class="text-gray-500 mt-2 text-sm font-medium">Searching archive...</p>
+          </div>
+          <div id="word-search-output"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── AVERAGES & EXTREMES ── -->
     <div class="grid md:grid-cols-2 gap-6 mb-10">
       <div class="card-elevated p-6">
-        <h2 class="text-lg font-bold text-gray-800 mb-5">Averages</h2>
+        <h2 class="text-base font-black text-gray-900 mb-5 flex items-center gap-2">
+          <span class="w-7 h-7 rounded-lg flex items-center justify-center text-xs" style="background:linear-gradient(135deg,#FEF3C7,#FDE68A);">~</span>
+          Averages Per Puzzle
+        </h2>
         <div class="space-y-5">
           <div>
-            <div class="flex justify-between text-sm mb-2">
-              <span class="text-gray-600 font-medium">Words per puzzle</span>
-              <span class="font-bold text-gray-800">{safeNum(averages.wordsPerPuzzle).toFixed(1)}</span>
+            <div class="flex justify-between text-sm mb-1.5">
+              <span class="text-gray-500 font-medium">Words</span>
+              <span class="font-black text-gray-900">{safeNum(averages.wordsPerPuzzle).toFixed(1)}</span>
             </div>
-            <div class="progress-bar">
-              <div class="progress-fill bg-amber-400" style={`width: ${Math.min((safeNum(averages.wordsPerPuzzle) / 81) * 100, 100)}%`}></div>
-            </div>
-          </div>
-          <div>
-            <div class="flex justify-between text-sm mb-2">
-              <span class="text-gray-600 font-medium">Pangrams per puzzle</span>
-              <span class="font-bold text-gray-800">{safeNum(averages.pangramsPerPuzzle).toFixed(1)}</span>
-            </div>
-            <div class="progress-bar">
-              <div class="progress-fill bg-amber-400" style={`width: ${Math.min((safeNum(averages.pangramsPerPuzzle) / 8) * 100, 100)}%`}></div>
+            <div class="w-full h-2.5 rounded-full bg-gray-100 overflow-hidden">
+              <div class="h-full rounded-full" style={`width:${Math.min((safeNum(averages.wordsPerPuzzle)/81)*100,100)}%;background:linear-gradient(90deg,#FCD34D,#D97706);`}></div>
             </div>
           </div>
           <div>
-            <div class="flex justify-between text-sm mb-2">
-              <span class="text-gray-600 font-medium">Average word length</span>
-              <span class="font-bold text-gray-800">{safeNum(averages.averageWordLength).toFixed(1)}</span>
+            <div class="flex justify-between text-sm mb-1.5">
+              <span class="text-gray-500 font-medium">Pangrams</span>
+              <span class="font-black text-gray-900">{safeNum(averages.pangramsPerPuzzle).toFixed(1)}</span>
             </div>
-            <div class="progress-bar">
-              <div class="progress-fill bg-amber-400" style={`width: ${Math.min((safeNum(averages.averageWordLength) / 10) * 100, 100)}%`}></div>
+            <div class="w-full h-2.5 rounded-full bg-gray-100 overflow-hidden">
+              <div class="h-full rounded-full" style={`width:${Math.min((safeNum(averages.pangramsPerPuzzle)/8)*100,100)}%;background:linear-gradient(90deg,#FCD34D,#D97706);`}></div>
+            </div>
+          </div>
+          <div>
+            <div class="flex justify-between text-sm mb-1.5">
+              <span class="text-gray-500 font-medium">Average word length</span>
+              <span class="font-black text-gray-900">{safeNum(averages.averageWordLength).toFixed(1)} letters</span>
+            </div>
+            <div class="w-full h-2.5 rounded-full bg-gray-100 overflow-hidden">
+              <div class="h-full rounded-full" style={`width:${Math.min((safeNum(averages.averageWordLength)/10)*100,100)}%;background:linear-gradient(90deg,#FCD34D,#D97706);`}></div>
             </div>
           </div>
         </div>
       </div>
 
       <div class="card-elevated p-6">
-        <h2 class="text-lg font-bold text-gray-800 mb-5">Extremes</h2>
-        <div class="space-y-3">
+        <h2 class="text-base font-black text-gray-900 mb-5 flex items-center gap-2">
+          <span class="w-7 h-7 rounded-lg flex items-center justify-center text-xs" style="background:linear-gradient(135deg,#ECFDF5,#D1FAE5);">&#9651;</span>
+          All-Time Records
+        </h2>
+        <div class="space-y-2.5">
           {extremes.puzzleWithMostWords && (
-            <div class="p-3 bg-emerald-50 rounded-xl">
-              <div class="flex justify-between items-center">
-                <span class="text-gray-600 text-sm font-medium">Most words</span>
-                <span class="font-bold text-emerald-700 text-sm">{safeLocale(extremes.puzzleWithMostWords.word_count)} words</span>
+            <div class="flex items-center justify-between p-3 rounded-xl" style="background:#F0FDF4;border:1px solid #BBF7D0;">
+              <div>
+                <p class="text-xs font-bold text-emerald-700">Most Words</p>
+                {extremes.puzzleWithMostWords.date && <p class="text-[11px] text-gray-500">{extremes.puzzleWithMostWords.date}</p>}
               </div>
-              {extremes.puzzleWithMostWords.date && (
-                <p class="text-xs text-gray-500 mt-1">on {extremes.puzzleWithMostWords.date} <a href="/archive" data-archive-slug={archiveSlug(extremes.puzzleWithMostWords.date)} data-archive-date={extremes.puzzleWithMostWords.date} class="text-amber-600 font-semibold hover:text-amber-700 ml-1">&rarr; View in Archive</a></p>
-              )}
+              <div class="text-right">
+                <span class="text-lg font-black text-emerald-700">{safeLocale(extremes.puzzleWithMostWords.word_count)}</span>
+                {extremes.puzzleWithMostWords.date && <a href={`/archive?date=${archiveSlug(extremes.puzzleWithMostWords.date)}`} class="block text-[10px] font-bold text-amber-600 hover:text-amber-700">View &rarr;</a>}
+              </div>
             </div>
           )}
           {extremes.puzzleWithFewestWords && (
-            <div class="p-3 bg-red-50 rounded-xl">
-              <div class="flex justify-between items-center">
-                <span class="text-gray-600 text-sm font-medium">Fewest words</span>
-                <span class="font-bold text-red-700 text-sm">{safeLocale(extremes.puzzleWithFewestWords.word_count)} words</span>
+            <div class="flex items-center justify-between p-3 rounded-xl" style="background:#FFF1F2;border:1px solid #FECDD3;">
+              <div>
+                <p class="text-xs font-bold text-red-700">Fewest Words</p>
+                {extremes.puzzleWithFewestWords.date && <p class="text-[11px] text-gray-500">{extremes.puzzleWithFewestWords.date}</p>}
               </div>
-              {extremes.puzzleWithFewestWords.date && (
-                <p class="text-xs text-gray-500 mt-1">on {extremes.puzzleWithFewestWords.date} <a href="/archive" data-archive-slug={archiveSlug(extremes.puzzleWithFewestWords.date)} data-archive-date={extremes.puzzleWithFewestWords.date} class="text-amber-600 font-semibold hover:text-amber-700 ml-1">&rarr; View in Archive</a></p>
-              )}
+              <div class="text-right">
+                <span class="text-lg font-black text-red-700">{safeLocale(extremes.puzzleWithFewestWords.word_count)}</span>
+                {extremes.puzzleWithFewestWords.date && <a href={`/archive?date=${archiveSlug(extremes.puzzleWithFewestWords.date)}`} class="block text-[10px] font-bold text-amber-600 hover:text-amber-700">View &rarr;</a>}
+              </div>
             </div>
           )}
           {extremes.puzzleWithMostPangrams && (
-            <div class="p-3 bg-amber-50 rounded-xl">
-              <div class="flex justify-between items-center">
-                <span class="text-gray-600 text-sm font-medium">Most pangrams</span>
-                <span class="font-bold text-amber-700 text-sm">{safeLocale(extremes.puzzleWithMostPangrams.pangrams_count)} pangrams</span>
+            <div class="flex items-center justify-between p-3 rounded-xl" style="background:#FFFBEB;border:1px solid #FDE68A;">
+              <div>
+                <p class="text-xs font-bold text-amber-700">Most Pangrams</p>
+                {extremes.puzzleWithMostPangrams.date && <p class="text-[11px] text-gray-500">{extremes.puzzleWithMostPangrams.date}</p>}
               </div>
-              {extremes.puzzleWithMostPangrams.date && (
-                <p class="text-xs text-gray-500 mt-1">on {extremes.puzzleWithMostPangrams.date} <a href="/archive" data-archive-slug={archiveSlug(extremes.puzzleWithMostPangrams.date)} data-archive-date={extremes.puzzleWithMostPangrams.date} class="text-amber-600 font-semibold hover:text-amber-700 ml-1">&rarr; View in Archive</a></p>
-              )}
+              <div class="text-right">
+                <span class="text-lg font-black text-amber-700">{safeLocale(extremes.puzzleWithMostPangrams.pangrams_count)}</span>
+                {extremes.puzzleWithMostPangrams.date && <a href={`/archive?date=${archiveSlug(extremes.puzzleWithMostPangrams.date)}`} class="block text-[10px] font-bold text-amber-600 hover:text-amber-700">View &rarr;</a>}
+              </div>
             </div>
           )}
           {extremes.highestScore && (
-            <div class="p-3 bg-violet-50 rounded-xl">
-              <div class="flex justify-between items-center">
-                <span class="text-gray-600 text-sm font-medium">Highest score</span>
-                <span class="font-bold text-violet-700 text-sm">{safeLocale(extremes.highestScore.max_score)} points</span>
+            <div class="flex items-center justify-between p-3 rounded-xl" style="background:#F5F3FF;border:1px solid #DDD6FE;">
+              <div>
+                <p class="text-xs font-bold text-violet-700">Highest Score</p>
+                {extremes.highestScore.date && <p class="text-[11px] text-gray-500">{extremes.highestScore.date}</p>}
               </div>
-              {extremes.highestScore.date && (
-                <p class="text-xs text-gray-500 mt-1">on {extremes.highestScore.date} <a href="/archive" data-archive-slug={archiveSlug(extremes.highestScore.date)} data-archive-date={extremes.highestScore.date} class="text-amber-600 font-semibold hover:text-amber-700 ml-1">&rarr; View in Archive</a></p>
-              )}
-            </div>
-          )}
-          {extremes.lowestScore && (
-            <div class="p-3 bg-orange-50 rounded-xl">
-              <div class="flex justify-between items-center">
-                <span class="text-gray-600 text-sm font-medium">Lowest score</span>
-                <span class="font-bold text-orange-700 text-sm">{safeLocale(extremes.lowestScore.max_score)} points</span>
-              </div>
-              {extremes.lowestScore.date && (
-                <p class="text-xs text-gray-500 mt-1">on {extremes.lowestScore.date} <a href="/archive" data-archive-slug={archiveSlug(extremes.lowestScore.date)} data-archive-date={extremes.lowestScore.date} class="text-amber-600 font-semibold hover:text-amber-700 ml-1">&rarr; View in Archive</a></p>
-              )}
-            </div>
-          )}
-          {extremes.longestWordLength && (
-            <div class="p-3 bg-blue-50 rounded-xl">
-              <div class="flex justify-between items-center">
-                <span class="text-gray-600 text-sm font-medium">Longest word</span>
-                <span class="font-bold text-blue-700 text-sm">{safeLocale(extremes.longestWordLength)} letters</span>
+              <div class="text-right">
+                <span class="text-lg font-black text-violet-700">{safeLocale(extremes.highestScore.max_score)} pts</span>
+                {extremes.highestScore.date && <a href={`/archive?date=${archiveSlug(extremes.highestScore.date)}`} class="block text-[10px] font-bold text-amber-600 hover:text-amber-700">View &rarr;</a>}
               </div>
             </div>
           )}
@@ -177,106 +223,186 @@ const faqSchema = JSON.stringify({
       </div>
     </div>
 
-    <!-- Center Letter Frequency -->
+    <!-- ── CENTER LETTER FREQUENCY ── -->
     <div class="card-elevated p-6 mb-10">
-      <h2 class="text-lg font-bold text-gray-800 mb-5">Most Common Center Letters</h2>
+      <h2 class="text-base font-black text-gray-900 mb-1">Most Common Center Letters</h2>
+      <p class="text-sm text-gray-400 mb-6">How often each letter sits in the center position across all puzzles</p>
       <div class="space-y-3">
-        {centerFreq.map(item => (
+        {centerFreq.map((item, idx) => (
           <div class="flex items-center gap-3">
-            <span class="letter-circle letter-circle-center !w-9 !h-9 !text-sm flex-shrink-0">{item.letter}</span>
+            <span class="w-4 text-[11px] font-black text-gray-300 text-right flex-shrink-0">{idx + 1}</span>
+            <div class="w-8 h-8 rounded-xl flex items-center justify-center font-black text-sm flex-shrink-0" style={idx === 0 ? 'background:linear-gradient(135deg,#F7C948,#D97706);color:white;' : 'background:#F1F5F9;color:#334155;'}>{item.letter}</div>
             <div class="flex-1">
-              <div class="w-full bg-gray-100 rounded-full h-7 overflow-hidden">
-                <div class="bg-gradient-to-r from-amber-300 to-amber-500 h-7 rounded-full flex items-center pl-3 text-xs text-white font-bold" style={`width: ${Math.max((item.count / maxCenterCount) * 100, 3)}%`}>
+              <div class="w-full h-8 rounded-xl overflow-hidden bg-gray-100">
+                <div class="h-8 rounded-xl flex items-center px-3 text-xs font-bold text-white transition-all" style={`width:${Math.max((item.count/maxCenterCount)*100,4)}%;background:${idx === 0 ? 'linear-gradient(90deg,#F7C948,#D97706)' : idx < 3 ? 'linear-gradient(90deg,#FDE68A,#F59E0B)' : 'linear-gradient(90deg,#E2E8F0,#CBD5E1)'};color:${idx < 3 ? 'white' : '#64748B'};`}>
                   {item.count}
                 </div>
               </div>
             </div>
-            <span class="text-xs text-gray-400 font-medium w-12 text-right">{item.percentage}%</span>
+            <span class="text-xs font-bold text-gray-400 w-12 text-right flex-shrink-0">{item.percentage}%</span>
           </div>
         ))}
       </div>
     </div>
 
-    <!-- Letter Frequency -->
+    <!-- ── ALL LETTERS FREQUENCY ── -->
     <div class="card-elevated p-6 mb-10">
-      <h2 class="text-lg font-bold text-gray-800 mb-5">All Letters Frequency</h2>
-      <div class="grid sm:grid-cols-2 gap-x-8 gap-y-2.5">
+      <h2 class="text-base font-black text-gray-900 mb-1">All Letters Frequency</h2>
+      <p class="text-sm text-gray-400 mb-6">Total appearances across all puzzles (c = times as center letter)</p>
+      <div class="grid sm:grid-cols-2 gap-x-8 gap-y-2">
         {letterFreq.map(item => (
-          <div class="flex items-center gap-3 py-1">
-            <span class="letter-circle letter-circle-outer !w-8 !h-8 !text-xs flex-shrink-0">{item.letter}</span>
+          <div class="flex items-center gap-3 py-0.5">
+            <div class="w-7 h-7 rounded-lg flex items-center justify-center font-black text-xs flex-shrink-0" style="background:#F1F5F9;color:#334155;">{item.letter}</div>
             <div class="flex-1">
-              <div class="progress-bar !h-3">
-                <div class="progress-fill bg-amber-400" style={`width: ${(item.totalAppearances / maxLetterCount) * 100}%`}></div>
+              <div class="w-full h-2.5 rounded-full overflow-hidden bg-gray-100">
+                <div class="h-full rounded-full" style={`width:${(item.totalAppearances/maxLetterCount)*100}%;background:linear-gradient(90deg,#FCD34D,#D97706);`}></div>
               </div>
             </div>
-            <span class="text-xs text-gray-500 font-medium w-16 text-right">{item.totalAppearances} <span class="text-gray-300">({item.asCenter}c)</span></span>
+            <span class="text-xs text-gray-500 font-semibold w-20 text-right flex-shrink-0">{item.totalAppearances} <span class="text-gray-300">({item.asCenter}c)</span></span>
           </div>
         ))}
       </div>
     </div>
 
-    <!-- Word Length Distribution -->
+    <!-- ── WORD LENGTH DISTRIBUTION ── -->
     <div class="card-elevated p-6 mb-10">
-      <h2 class="text-lg font-bold text-gray-800 mb-5">Word Length Distribution</h2>
+      <h2 class="text-base font-black text-gray-900 mb-1">Word Length Distribution</h2>
+      <p class="text-sm text-gray-400 mb-6">How many answers of each length exist across all puzzles. Gold = contains pangrams.</p>
       <div class="space-y-2.5">
         {wordDist.map(item => (
           <div class="flex items-center gap-3">
-            <span class="w-10 text-sm font-bold text-gray-600 text-right">{item.length}-L</span>
+            <span class="w-10 text-sm font-black text-gray-500 text-right flex-shrink-0">{item.length}L</span>
             <div class="flex-1">
-              <div class="w-full bg-gray-100 rounded-full h-7 overflow-hidden">
-                <div class:list={[
-                  'h-7 rounded-full flex items-center pl-3 text-xs font-bold',
-                  item.pangram_count > 0
-                    ? 'bg-gradient-to-r from-amber-300 to-amber-500 text-white'
-                    : 'bg-gray-300 text-gray-700'
-                ]} style={`width: ${Math.max((item.count / maxDistCount) * 100, 2)}%`}>
+              <div class="w-full h-8 rounded-xl overflow-hidden bg-gray-100">
+                <div class={`h-8 rounded-xl flex items-center px-3 text-xs font-bold ${item.pangram_count > 0 ? 'text-white' : 'text-gray-600'}`} style={`width:${Math.max((item.count/maxDistCount)*100,2)}%;background:${item.pangram_count > 0 ? 'linear-gradient(90deg,#FCD34D,#D97706)' : '#E2E8F0'};`}>
                   {safeLocale(item.count)}
                 </div>
               </div>
             </div>
-            {item.pangram_count > 0 && (
-              <span class="text-xs text-amber-600 font-bold flex items-center gap-0.5">
-                <svg width="10" height="10" viewBox="0 0 20 20" fill="#F59E0B"><path d="M10 1l2.39 4.84 5.34.78-3.87 3.77.91 5.33L10 13.27l-4.77 2.51.91-5.33L2.27 6.62l5.34-.78z"/></svg>
-                {item.pangram_count}
-              </span>
-            )}
+            {item.pangram_count > 0 ? (
+              <div class="flex items-center gap-1 w-14 flex-shrink-0">
+                <svg width="10" height="10" viewBox="0 0 20 20" fill="#F59E0B" aria-hidden="true"><path d="M10 1l2.39 4.84 5.34.78-3.87 3.77.91 5.33L10 13.27l-4.77 2.51.91-5.33L2.27 6.62l5.34-.78z"/></svg>
+                <span class="text-xs font-bold text-amber-600">{item.pangram_count}</span>
+              </div>
+            ) : <div class="w-14 flex-shrink-0"></div>}
           </div>
         ))}
       </div>
     </div>
 
-    <!-- SEO Content -->
-    <div class="p-6 bg-gray-50 rounded-2xl">
-      <h2 class="text-lg font-bold text-gray-800 mb-3">Understanding Spelling Bee Statistics</h2>
-      <p class="text-gray-600 leading-relaxed text-sm mb-3">Our database covers {safeLocale(overview.totalPuzzles)} Spelling Bee puzzles spanning years of daily gameplay. These statistics reveal consistent patterns in how the New York Times constructs each puzzle. The average puzzle contains roughly {safeNum(averages.wordsPerPuzzle).toFixed(0)} words, though this number swings significantly — some puzzles have as few as 15 words while others push past 60.</p>
-      <p class="text-gray-600 leading-relaxed text-sm mb-3">Center letter selection isn't random. The data shows certain letters appear as the center letter far more frequently than others. {centerFreq.length > 0 ? `<strong>${centerFreq[0].letter}</strong> leads with ${centerFreq[0].count} appearances (${centerFreq[0].percentage}%), making it the most common center letter in the puzzle's history.` : ''} This matters because the center letter constrains every single answer — a rare center letter typically means fewer findable words.</p>
-      <p class="text-gray-600 leading-relaxed text-sm mb-3">Pangrams appear in nearly every puzzle, but perfect pangrams (7-letter words using each letter exactly once) are genuinely rare. Out of {safeLocale(overview.totalPuzzles)} puzzles, only {safeLocale(overview.totalPerfectPangrams)} contain a perfect pangram. When one shows up, it's usually a major scoring opportunity since the 14-point payout (7 for the word + 7 bonus) can represent a substantial chunk of the total available points.</p>
-      <p class="text-gray-600 leading-relaxed text-sm">Word length distribution skews heavily toward shorter words. Four-letter words dominate the answer pool, followed by 5-letter words. Longer words become progressively rarer, though they carry more points per word. This is why finding the pangrams and longer words early in your solving session pays off disproportionately — they account for a large share of total available points despite being a small fraction of the word count.</p>
+    <!-- ── SEO CONTENT ── -->
+    <div class="rounded-2xl p-7 mb-10" style="background:linear-gradient(180deg,#F8FAFC 0%,#F1F5F9 100%);border:1px solid #E2E8F0;">
+      <h2 class="font-black text-gray-900 mb-5" style="font-size:1.4rem;">Understanding Spelling Bee Statistics</h2>
+      <div class="space-y-4">
+        <p class="text-gray-600 leading-relaxed" style="font-size:1.125rem;">Our database covers {safeLocale(overview.totalPuzzles)} Spelling Bee puzzles spanning years of daily gameplay. The average puzzle contains roughly {safeNum(averages.wordsPerPuzzle).toFixed(0)} words, though this swings significantly — some puzzles have as few as 15 words while others push past 60.</p>
+        <p class="text-gray-600 leading-relaxed" style="font-size:1.125rem;">Center letter selection follows clear patterns. {centerFreq.length > 0 ? `${centerFreq[0].letter} leads with ${centerFreq[0].count} appearances (${centerFreq[0].percentage}%), making it the most common center letter.` : ''} A rare center letter typically constrains the word pool significantly.</p>
+        <p class="text-gray-600 leading-relaxed" style="font-size:1.125rem;">Perfect pangrams — 7-letter words using each letter exactly once — are genuinely rare. Out of {safeLocale(overview.totalPuzzles)} puzzles, only {safeLocale(overview.totalPerfectPangrams)} contain one ({overview.totalPuzzles > 0 ? ((overview.totalPerfectPangrams / overview.totalPuzzles) * 100).toFixed(1) : 0}% of all puzzles).</p>
+      </div>
     </div>
 
-    <!-- FAQ -->
-    <div class="mt-8">
-      <h2 class="text-lg font-bold text-gray-800 mb-4">Frequently Asked Questions</h2>
+    <!-- ── FAQ ── -->
+    <div class="mb-4">
+      <h2 class="font-black text-gray-900 mb-5" style="font-size:1.4rem;">Frequently Asked Questions</h2>
       <div class="space-y-3">
         <details class="card-elevated p-5 group" open>
-          <summary class="font-semibold text-gray-800 cursor-pointer flex items-center justify-between">What is the most common center letter in the Spelling Bee?
-            <svg class="w-4 h-4 text-gray-400 group-open:rotate-180 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+          <summary class="font-bold text-gray-800 cursor-pointer flex items-center justify-between text-sm">What is the most common center letter in the Spelling Bee?
+            <svg class="w-4 h-4 text-gray-400 group-open:rotate-180 transition-transform flex-shrink-0 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
           </summary>
-          <p class="text-sm text-gray-600 mt-3 leading-relaxed">{centerFreq.length > 0 ? `The most common center letter is <strong>${centerFreq[0].letter}</strong>, appearing in ${centerFreq[0].count} puzzles (${centerFreq[0].percentage}%). The top 5 center letters are ${centerFreq.slice(0, 5).map(c => c.letter).join(', ')}.` : 'Data not available at this time.'}</p>
+          <p class="text-sm text-gray-600 mt-3 leading-relaxed">{centerFreq.length > 0 ? `The most common center letter is ${centerFreq[0].letter}, appearing in ${centerFreq[0].count} puzzles (${centerFreq[0].percentage}%). Top 5: ${centerFreq.slice(0,5).map(c => c.letter).join(', ')}.` : 'Data not available.'}</p>
         </details>
         <details class="card-elevated p-5 group">
-          <summary class="font-semibold text-gray-800 cursor-pointer flex items-center justify-between">How many words does the average Spelling Bee puzzle have?
-            <svg class="w-4 h-4 text-gray-400 group-open:rotate-180 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+          <summary class="font-bold text-gray-800 cursor-pointer flex items-center justify-between text-sm">How many words does the average puzzle have?
+            <svg class="w-4 h-4 text-gray-400 group-open:rotate-180 transition-transform flex-shrink-0 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
           </summary>
-          <p class="text-sm text-gray-600 mt-3 leading-relaxed">The average puzzle has about {safeNum(averages.wordsPerPuzzle).toFixed(0)} words, with an average of {safeNum(averages.pangramsPerPuzzle).toFixed(1)} pangrams. Puzzles with more pangrams tend to have higher total point values.</p>
+          <p class="text-sm text-gray-600 mt-3 leading-relaxed">About {safeNum(averages.wordsPerPuzzle).toFixed(0)} words, with {safeNum(averages.pangramsPerPuzzle).toFixed(1)} pangrams on average. Puzzles with more pangrams tend to have higher maximum scores.</p>
         </details>
         <details class="card-elevated p-5 group">
-          <summary class="font-semibold text-gray-800 cursor-pointer flex items-center justify-between">How rare is a perfect pangram?
-            <svg class="w-4 h-4 text-gray-400 group-open:rotate-180 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+          <summary class="font-bold text-gray-800 cursor-pointer flex items-center justify-between text-sm">How rare is a perfect pangram?
+            <svg class="w-4 h-4 text-gray-400 group-open:rotate-180 transition-transform flex-shrink-0 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
           </summary>
-          <p class="text-sm text-gray-600 mt-3 leading-relaxed">Perfect pangrams are uncommon. Out of {safeLocale(overview.totalPuzzles)} puzzles in our database, only {safeLocale(overview.totalPerfectPangrams)} contain one. That's roughly {overview.totalPuzzles > 0 ? ((overview.totalPerfectPangrams / overview.totalPuzzles) * 100).toFixed(1) : '0'}% of all puzzles.</p>
+          <p class="text-sm text-gray-600 mt-3 leading-relaxed">Out of {safeLocale(overview.totalPuzzles)} puzzles, only {safeLocale(overview.totalPerfectPangrams)} contain a perfect pangram — roughly {overview.totalPuzzles > 0 ? ((overview.totalPerfectPangrams / overview.totalPuzzles) * 100).toFixed(1) : '0'}% of all puzzles.</p>
         </details>
       </div>
     </div>
+
   </div>
+
 </BaseLayout>
+
+<script>
+  const input = document.getElementById('word-search-input');
+  const btn = document.getElementById('word-search-btn');
+  const resultBox = document.getElementById('word-search-result');
+  const loadingEl = document.getElementById('word-search-loading');
+  const outputEl = document.getElementById('word-search-output');
+
+  async function searchWord() {
+    const raw = (input.value || '').trim();
+    if (!raw || raw.length < 2) { input.focus(); return; }
+    const word = raw.toUpperCase().replace(/[^A-Z]/g, '');
+    if (!word) return;
+
+    resultBox.classList.remove('hidden');
+    loadingEl.classList.remove('hidden');
+    outputEl.innerHTML = '';
+
+    try {
+      const res = await fetch(`https://spellingbeesolver.dev/api/search/word/${encodeURIComponent(word.toLowerCase())}`);
+      const data = await res.json();
+      loadingEl.classList.add('hidden');
+
+      if (!data.success || !data.data) {
+        outputEl.innerHTML = `<div class="py-6 text-center"><p class="text-gray-500 font-medium">Something went wrong. Please try again.</p></div>`;
+        return;
+      }
+
+      const { totalAppearances, appearances } = data.data;
+
+      if (totalAppearances === 0) {
+        outputEl.innerHTML = `
+          <div class="py-8 text-center">
+            <div class="w-14 h-14 rounded-2xl flex items-center justify-center mx-auto mb-4" style="background:#FEF9C3;">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#CA8A04" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+            </div>
+            <p class="font-black text-gray-700 text-lg">"${word}" not found</p>
+            <p class="text-gray-400 text-sm mt-1">This word has never appeared as an official NYT Spelling Bee answer.</p>
+          </div>`;
+        return;
+      }
+
+      const pangramCount = appearances.filter(a => a.was_pangram).length;
+      outputEl.innerHTML = `
+        <div class="flex items-start justify-between flex-wrap gap-3 mb-5">
+          <div>
+            <p class="text-2xl font-black text-gray-900">"${word}"</p>
+            <p class="text-sm text-gray-500 mt-0.5">appeared in <strong class="text-amber-600">${totalAppearances}</strong> puzzle${totalAppearances !== 1 ? 's' : ''}${pangramCount > 0 ? ` &mdash; <span class="text-amber-500">&#9733; pangram in ${pangramCount}</span>` : ''}</p>
+          </div>
+          <div class="flex gap-2">
+            <span class="px-3 py-1.5 rounded-full text-xs font-black" style="background:linear-gradient(135deg,#F7C948,#D97706);color:white;">${totalAppearances} ${totalAppearances === 1 ? 'Appearance' : 'Appearances'}</span>
+            ${pangramCount > 0 ? `<span class="px-3 py-1.5 rounded-full text-xs font-black" style="background:#FFFBEB;color:#D97706;border:1px solid #FDE68A;">&#9733; Pangram ${pangramCount}x</span>` : ''}
+          </div>
+        </div>
+        <div class="space-y-2">
+          ${appearances.map(a => `
+            <div class="flex items-center gap-3 p-3 rounded-xl border transition-colors hover:border-amber-200" style="background:#FAFAFA;border-color:#E2E8F0;">
+              <div class="w-8 h-8 rounded-lg flex items-center justify-center font-black text-sm flex-shrink-0" style="background:${a.was_pangram ? 'linear-gradient(135deg,#F7C948,#D97706)' : '#F1F5F9'};color:${a.was_pangram ? 'white' : '#334155'};">${a.letters}</div>
+              <div class="flex-1 min-w-0">
+                <p class="font-bold text-gray-800 text-sm">${a.date}</p>
+                <p class="text-[11px] text-gray-400">${a.all_letters} &bull; ${a.word_count} words &bull; ${a.pangrams_count} pangram${a.pangrams_count !== 1 ? 's' : ''}</p>
+              </div>
+              ${a.was_pangram ? '<span class="text-[10px] font-black text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-100 flex-shrink-0">&#9733; PANGRAM</span>' : ''}
+              <a href="/archive?date=${a.slug}" class="text-xs font-bold text-amber-600 hover:text-amber-700 flex-shrink-0 ml-1" aria-label="View puzzle for ${a.date}">View &rarr;</a>
+            </div>
+          `).join('')}
+        </div>`;
+
+      resultBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    } catch (e) {
+      loadingEl.classList.add('hidden');
+      outputEl.innerHTML = `<div class="py-6 text-center"><p class="text-red-500 font-medium">Error: ${e.message}</p></div>`;
+    }
+  }
+
+  btn.addEventListener('click', searchWord);
+  input.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); searchWord(); } });
+</script>
