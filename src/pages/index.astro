@@ -131,64 +131,6 @@ const websiteSchema = JSON.stringify({
   </section>
 
   <!-- ============================================================
-    TODAY'S PUZZLE PREVIEW
-  ============================================================ -->
-  <section class="bg-white py-16 border-b border-gray-100">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6">
-      <div class="flex items-center gap-3 mb-8">
-        <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-amber-50 border border-amber-200">
-          <span class="w-1.5 h-1.5 bg-amber-500 rounded-full animate-pulse" aria-hidden="true"></span>
-          <span class="text-xs font-bold text-amber-700 uppercase tracking-widest">Live Today</span>
-        </div>
-        <h2 class="text-2xl font-bold text-gray-900">Today's Puzzle</h2>
-      </div>
-      <div class="grid lg:grid-cols-[auto,1fr] gap-10 items-start">
-        <div class="flex flex-col items-center mx-auto lg:mx-0">
-          <Honeycomb center={center} outer={outerLetters} size="md" />
-          <p class="text-sm font-semibold text-gray-700 mt-3">{puzzleDate}</p>
-          <p class="text-xs text-gray-400 mt-0.5 font-mono tracking-[0.2em]">{allLetters}</p>
-        </div>
-        <div>
-          <div class="grid grid-cols-3 gap-4 mb-6">
-            <div class="rounded-2xl p-4 text-center border" style="background:linear-gradient(135deg,#FFFBEB,#FEF3C7);border-color:rgba(245,158,11,.2);">
-              <p class="text-3xl font-black text-amber-700">{wordCount}</p>
-              <p class="text-xs font-bold text-amber-600 uppercase tracking-widest mt-1">Words</p>
-            </div>
-            <div class="rounded-2xl p-4 text-center border" style="background:linear-gradient(135deg,#F5F3FF,#EDE9FE);border-color:rgba(124,58,237,.15);">
-              <p class="text-3xl font-black text-purple-700">{pangramCount}</p>
-              <p class="text-xs font-bold text-purple-600 uppercase tracking-widest mt-1">Pangrams</p>
-            </div>
-            <div class="rounded-2xl p-4 text-center border" style="background:linear-gradient(135deg,#ECFDF5,#D1FAE5);border-color:rgba(5,150,105,.15);">
-              <p class="text-3xl font-black text-emerald-700">{totalPoints}</p>
-              <p class="text-xs font-bold text-emerald-600 uppercase tracking-widest mt-1">Max Pts</p>
-            </div>
-          </div>
-          {pangrams.length > 0 && (
-            <div class="mb-6">
-              <p class="text-xs font-bold text-amber-700 mb-2.5 flex items-center gap-1.5 uppercase tracking-wide">
-                <svg width="13" height="13" viewBox="0 0 20 20" fill="#F59E0B" aria-hidden="true"><path d="M10 1l2.39 4.84 5.34.78-3.87 3.77.91 5.33L10 13.27l-4.77 2.51.91-5.33L2.27 6.62l5.34-.78z"/></svg>
-                Today's Pangrams
-              </p>
-              <div class="flex flex-wrap gap-2">
-                {pangrams.map(w => (
-                  <span class="pangram-chip">
-                    <span class="star" aria-hidden="true">&#9733;</span>
-                    {w.word}
-                  </span>
-                ))}
-              </div>
-            </div>
-          )}
-          <a href="/today" class="inline-flex items-center gap-2 text-sm font-bold text-amber-600 hover:text-amber-700 transition-colors group">
-            View all {wordCount} words with full analysis
-            <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor" class="group-hover:translate-x-1 transition-transform" aria-hidden="true"><path d="M6.5 3.5L11 8l-4.5 4.5L5.5 11 8.5 8 5.5 5z"/></svg>
-          </a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============================================================
     FEATURES GRID
   ============================================================ -->
   <section class="bg-gray-50 py-16 border-b border-gray-100">

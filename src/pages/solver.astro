@@ -124,46 +124,85 @@ const combinedSchema = JSON.stringify([JSON.parse(howToSchema), JSON.parse(faqSc
       <div class="w-full lg:w-auto flex-shrink-0 lg:w-[340px]">
 
         <!-- ── FAST TEXT ENTRY ── -->
-        <div class="card-elevated p-5 mb-4">
-          <p class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-1 text-center">Fast Entry</p>
-          <p class="text-[11px] text-gray-400 text-center mb-4">Type letters directly — center + outer sync automatically</p>
-          <div class="flex items-center gap-3">
-            <!-- Center letter box -->
-            <div class="flex flex-col items-center gap-1.5">
-              <label for="text-center" class="text-[10px] font-bold text-amber-600 uppercase tracking-widest">Center</label>
-              <input
-                type="text"
-                id="text-center"
-                class="solver-box-center"
-                maxlength="1"
-                placeholder="A"
-                autocomplete="off"
-                spellcheck="false"
-                aria-label="Center letter"
-              />
+        <div class="card-elevated overflow-hidden mb-4">
+          <!-- Card header -->
+          <div class="px-5 py-3.5 flex items-center justify-between" style="background:linear-gradient(90deg,#FFFBEB 0%,#FFF9F0 100%);border-bottom:1px solid rgba(251,191,36,.2);">
+            <div class="flex items-center gap-2">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#D97706" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+              <span class="text-xs font-black text-amber-900 uppercase tracking-widest">Fast Entry</span>
             </div>
-            <!-- Outer letters box -->
-            <div class="flex flex-col items-center gap-1.5 flex-1">
-              <label for="text-outer" class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Outer Letters (6)</label>
-              <input
-                type="text"
-                id="text-outer"
-                class="solver-box-outer"
-                maxlength="6"
-                placeholder="BCDEFG"
-                autocomplete="off"
-                spellcheck="false"
-                aria-label="Outer letters"
-              />
-            </div>
+            <span class="text-[10px] font-bold text-amber-700 bg-amber-100 px-2.5 py-1 rounded-full border border-amber-200">Recommended</span>
           </div>
-          <button id="text-solve-btn"
-            class="w-full mt-4 py-3 rounded-xl font-bold text-sm text-white transition-all hover:-translate-y-0.5"
-            style="background:linear-gradient(135deg,#F7C948 0%,#D97706 100%);box-shadow:0 4px 12px rgba(247,201,72,.3);"
-            type="button">
-            <svg class="inline mr-1.5" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-            Solve
-          </button>
+          <div class="p-5">
+            <!-- Letter inputs -->
+            <div class="flex items-end gap-2.5 mb-4">
+              <!-- Center -->
+              <div class="flex flex-col items-center gap-1.5 flex-shrink-0">
+                <label for="text-center" class="text-[10px] font-black text-amber-600 uppercase tracking-widest">Center</label>
+                <input
+                  type="text"
+                  id="text-center"
+                  class="solver-box-center"
+                  maxlength="1"
+                  placeholder="A"
+                  autocomplete="off"
+                  spellcheck="false"
+                  aria-label="Center letter"
+                />
+              </div>
+              <!-- Separator dot -->
+              <div class="mb-4 flex-shrink-0 w-5 text-center">
+                <span class="text-lg font-black text-gray-300">+</span>
+              </div>
+              <!-- Outer -->
+              <div class="flex-1 flex flex-col gap-1.5 min-w-0">
+                <label for="text-outer" class="text-[10px] font-black text-slate-500 uppercase tracking-widest">Outer Letters <span class="text-slate-300 font-medium">(6)</span></label>
+                <input
+                  type="text"
+                  id="text-outer"
+                  class="solver-box-outer"
+                  maxlength="6"
+                  placeholder="BCDEFG"
+                  autocomplete="off"
+                  spellcheck="false"
+                  aria-label="Outer letters"
+                />
+              </div>
+            </div>
+
+            <!-- Dictionary selector -->
+            <div class="mb-4">
+              <label for="dict-select" class="text-[10px] font-black text-slate-500 uppercase tracking-widest block mb-1.5">
+                <svg class="inline mr-1 -mt-0.5" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+                Dictionary
+              </label>
+              <div class="relative">
+                <select
+                  id="dict-select"
+                  class="w-full h-11 pl-3.5 pr-9 rounded-xl border border-gray-200 bg-white text-sm font-semibold text-gray-700 focus:outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-100 cursor-pointer appearance-none transition-colors"
+                  style="background-image:url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%239CA3AF' stroke-width='2.5'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E\");background-repeat:no-repeat;background-position:right 0.75rem center;background-size:14px;"
+                >
+                  <option value="/ouroptimizedlist.txt">⭐ Most Suitable List</option>
+                  <option value="/twl06.txt">📚 Full Dictionary (TWL06)</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Autofill button -->
+            <button id="autofill-btn" class="autofill-btn w-full text-sm font-semibold mb-2.5" type="button">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+              Autofill Today's NYT Puzzle
+            </button>
+
+            <!-- Solve button -->
+            <button id="text-solve-btn"
+              class="w-full py-3.5 rounded-xl font-black text-base text-white transition-all active:scale-[.98]"
+              style="background:linear-gradient(135deg,#F7C948 0%,#D97706 100%);box-shadow:0 4px 14px rgba(217,119,6,.35);"
+              type="button">
+              <svg class="inline mr-2 -mt-0.5" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+              Solve
+            </button>
+          </div>
         </div>
 
         <!-- ── OR divider ── -->
@@ -227,18 +266,12 @@ const combinedSchema = JSON.stringify([JSON.parse(howToSchema), JSON.parse(faqSc
           </div>
 
           <!-- Action Buttons -->
-          <div class="mt-6 flex flex-col items-center gap-3">
-            <div class="flex items-center justify-center gap-3">
-              <button id="solve-btn" class="btn-primary !py-2.5 !px-6 text-sm font-bold" type="button">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-                Solve Puzzle
-              </button>
-              <button id="clear-btn" class="btn-secondary !py-2.5 !px-5 text-sm" type="button">Clear</button>
-            </div>
-            <button id="autofill-btn" class="autofill-btn text-sm font-semibold" type="button">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
-              Autofill Today's NYT Puzzle
+          <div class="mt-6 flex items-center justify-center gap-3">
+            <button id="solve-btn" class="btn-primary !py-2.5 !px-6 text-sm font-bold" type="button">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+              Solve Puzzle
             </button>
+            <button id="clear-btn" class="btn-secondary !py-2.5 !px-5 text-sm" type="button">Clear</button>
           </div>
 
           <!-- Quick Instructions -->
@@ -404,15 +437,17 @@ const combinedSchema = JSON.stringify([JSON.parse(howToSchema), JSON.parse(faqSc
 </BaseLayout>
 
 <script define:vars={{ todayCenter, todayOuterLetters }}>
-  // Client-side TWL06 dictionary for instant solving (no API needed)
+  // Client-side dictionary for instant solving (no API needed)
   let dictionary = [];
   let dictLoaded = false;
+  let loadedDictUrl = '';
 
   async function loadDictionary() {
-    if (dictLoaded) return dictionary;
+    const dictSelect = document.getElementById('dict-select');
+    const selectedUrl = dictSelect ? dictSelect.value : '/ouroptimizedlist.txt';
+    if (dictLoaded && loadedDictUrl === selectedUrl) return dictionary;
 
-    // Normalize line endings so CRLF-hosted dictionary files still solve correctly.
-    const res = await fetch('/twl06.txt');
+    const res = await fetch(selectedUrl);
     if (!res.ok) throw new Error('Failed to fetch dictionary');
 
     const text = await res.text();
@@ -421,9 +456,15 @@ const combinedSchema = JSON.stringify([JSON.parse(howToSchema), JSON.parse(faqSc
       .map(word => word.trim().toLowerCase())
       .filter(Boolean);
     dictLoaded = true;
+    loadedDictUrl = selectedUrl;
 
     return dictionary;
   }
+
+  // Reset cache when dictionary selection changes
+  document.getElementById('dict-select')?.addEventListener('change', () => {
+    dictLoaded = false;
+  });
 
   function solveSpellingBee(centerLetter, outerLetters, dict) {
     const allLetters = [centerLetter, ...outerLetters];
@@ -607,6 +648,12 @@ const combinedSchema = JSON.stringify([JSON.parse(howToSchema), JSON.parse(faqSc
       };
 
       displayResults(data);
+
+      // Auto-scroll to results
+      setTimeout(() => {
+        const resultsEl = document.getElementById('solver-results');
+        if (resultsEl) resultsEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 80);
     } catch (e) {
       console.error('Solve failed:', e);
       loadingDiv.classList.add('hidden');
