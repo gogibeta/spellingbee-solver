@@ -121,7 +121,15 @@ class Router {
     }
 
     const authed = isAuthenticated(request, env);
-    const publicRoute = path === '/' || path.startsWith('/api/public/archive/slug/');
+    const publicRoute =
+      path === '/' ||
+      path.startsWith('/api/public/archive/slug/') ||
+      path.startsWith('/api/search/word/') ||
+      path.startsWith('/api/search/date/') ||
+      path.startsWith('/api/search/letter/') ||
+      path.startsWith('/api/search/id/') ||
+      path === '/today' ||
+      path === '/yesterday';
 
     if (!publicRoute && !authed) {
       return jsonResponse(errorResponse('Unauthorized. Data endpoints require a valid API key via X-API-Key header or ?key= parameter.', 401), 401);
