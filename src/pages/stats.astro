@@ -347,16 +347,16 @@ const faqSchema = JSON.stringify({
     outputEl.innerHTML = '';
 
     try {
-      const res = await fetch(`https://spellingbeesolver.dev/api/search/word/${encodeURIComponent(word.toLowerCase())}`);
+      const res = await fetch(`/api/search/word/${encodeURIComponent(word.toLowerCase())}`);
       const data = await res.json();
       loadingEl.classList.add('hidden');
 
-      if (!data.success || !data.data) {
+      if (!data.success) {
         outputEl.innerHTML = `<div class="py-6 text-center"><p class="text-gray-500 font-medium">Something went wrong. Please try again.</p></div>`;
         return;
       }
 
-      const { totalAppearances, appearances } = data.data;
+      const { totalAppearances, appearances } = data;
 
       if (totalAppearances === 0) {
         outputEl.innerHTML = `
