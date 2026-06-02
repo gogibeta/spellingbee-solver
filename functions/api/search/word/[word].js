@@ -9,7 +9,8 @@ function sanitizeWord(input) {
 }
 
 export async function onRequestGet(context) {
-  const word = sanitizeWord(context.params.word);
+  const { env, params } = context;
+  const word = sanitizeWord(params.word);
   if (!word || word.length < 2 || word.length > 30) {
     return new Response(JSON.stringify({ success: false, error: 'Word must be 2–30 letters' }), {
       status: 400,
@@ -17,15 +18,20 @@ export async function onRequestGet(context) {
     });
   }
 
-  const workerBase = context.env.WORKER_PUBLIC_API_BASE || WORKER_PUBLIC_BASE;
-  const upstreamUrl = new URL(`/api/search/word/${encodeURIComponent(word)}`, workerBase);
+  let upstreamResponse;
 
-  const upstreamResponse = await fetch(upstreamUrl.toString(), {
-    cf: {
-      cacheEverything: true,
-      cacheTtl: 3600,
-    },
-  });
+  // Prefer Service Binding (zero-latency, same datacenter, no external HTTP)
+  if (env.SPELLING_BEE_API) {
+    const req = new Request(`https://internal/api/search/word/${encodeURIComponent(word)}`);
+    upstreamResponse = await env.SPELLING_BEE_API.fetch(req);
+  } else {
+    // Fallback: external HTTP request to the public worker
+    const workerBase = env.WORKER_PUBLIC_API_BASE || WORKER_PUBLIC_BASE;
+    const upstreamUrl = new URL(`/api/search/word/${encodeURIComponent(word)}`, workerBase);
+    upstreamResponse = await fetch(upstreamUrl.toString(), {
+      cf: { cacheEverything: true, cacheTtl: 3600 },
+    });
+  }
 
   const headers = new Headers(upstreamResponse.headers);
   headers.set('Cache-Control', CACHE_CONTROL);

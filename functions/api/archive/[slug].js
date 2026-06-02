@@ -9,7 +9,8 @@ function sanitizeSlug(input) {
 }
 
 export async function onRequestGet(context) {
-  const slug = sanitizeSlug(context.params.slug);
+  const { env, params } = context;
+  const slug = sanitizeSlug(params.slug);
   if (!slug) {
     return new Response('Invalid archive slug.', {
       status: 400,
@@ -20,14 +21,20 @@ export async function onRequestGet(context) {
     });
   }
 
-  const workerBase = context.env.WORKER_PUBLIC_API_BASE || WORKER_PUBLIC_BASE;
-  const upstreamUrl = new URL(`/api/public/archive/slug/${encodeURIComponent(slug)}/html`, workerBase);
-  const upstreamResponse = await fetch(upstreamUrl.toString(), {
-    cf: {
-      cacheEverything: true,
-      cacheTtl: 86400,
-    },
-  });
+  let upstreamResponse;
+
+  // Prefer Service Binding (zero-latency, same datacenter, no external HTTP)
+  if (env.SPELLING_BEE_API) {
+    const req = new Request(`https://internal/api/public/archive/slug/${encodeURIComponent(slug)}/html`);
+    upstreamResponse = await env.SPELLING_BEE_API.fetch(req);
+  } else {
+    // Fallback: external HTTP request to the public worker
+    const workerBase = env.WORKER_PUBLIC_API_BASE || WORKER_PUBLIC_BASE;
+    const upstreamUrl = new URL(`/api/public/archive/slug/${encodeURIComponent(slug)}/html`, workerBase);
+    upstreamResponse = await fetch(upstreamUrl.toString(), {
+      cf: { cacheEverything: true, cacheTtl: 86400 },
+    });
+  }
 
   const headers = new Headers(upstreamResponse.headers);
   headers.set('Cache-Control', CACHE_CONTROL);
