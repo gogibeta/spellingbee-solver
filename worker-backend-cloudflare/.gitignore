@@ -1,0 +1,10 @@
+# Local SQLite D1 dev databases (wrangler creates these for local dev)
+*.db
+*.db-shm
+*.db-wal
+
+# Wrangler cache and temp files
+.wrangler/
+
+# Dependencies
+node_modules/
