@@ -57,6 +57,7 @@ jobs:
       TRIGGER_SOURCE: ${{ github.event.client_payload.source || github.event_name }}
       SKIP_DEFINITIONS: ${{ inputs.skip_definitions || false }}
       SKIP_DEPLOY: ${{ inputs.skip_deploy || false }}
+      INDEXNOW_KEY: ${{ secrets.INDEXNOW_KEY || 'f6e3eb0be20b4bf6b5341cfcbd98cb7d' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -94,6 +95,10 @@ jobs:
               exit 1
             fi
           fi
+
+      - name: Write IndexNow Key File
+        if: ${{ env.SKIP_DEPLOY != 'true' }}
+        run: printf '%s' "$INDEXNOW_KEY" > "public/${INDEXNOW_KEY}.txt"
 
       - name: Build Site Snapshot (Initial Deploy)
         run: npm run build
@@ -150,6 +155,11 @@ jobs:
       - name: Deploy to Cloudflare Pages (With Today's Definitions)
         if: ${{ env.SKIP_DEFINITIONS != 'true' && env.SKIP_DEPLOY != 'true' && steps.second_deploy.outputs.redeploy == 'true' }}
         run: npx wrangler pages deploy dist --project-name spellingbee-solver
+
+      - name: Submit Sitemap to Bing IndexNow
+        if: ${{ env.SKIP_DEPLOY != 'true' }}
+        continue-on-error: true
+        run: node scripts/ping-indexnow.mjs
 
       - name: Backfill Definition Backlog
         id: backlog_definitions
